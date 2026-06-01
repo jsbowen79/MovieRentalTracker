@@ -14,7 +14,8 @@ async function connectDB() {
       console.log('Connected to MongoDB');
 
       return db;
-    } catch {
+    } catch (error) {
+      console.error('🔥 MongoDB REAL ERROR:', error);
       throw new mongoDBConnectionError('Mongo DB failed to connect.');
     }
   } else {
