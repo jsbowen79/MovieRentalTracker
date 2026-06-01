@@ -7,18 +7,8 @@ const swaggerDoc = require('./swagger-output.json');
 const routes = require('./routes/index.js');
 
 const PORT = 5000;
-
-process.on('exit', (code) => {
-  console.log('Process exiting with code:', code);
-});
-
-process.on('uncaughtException', (err) => {
-  console.log('UNCAUGHT EXCEPTION:', err);
-});
-
-process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION:', err);
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Movie Rental Tracker Server is working!');
