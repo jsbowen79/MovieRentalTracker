@@ -6,7 +6,19 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerDoc = require('./swagger-output.json');
 const routes = require('./routes/index.js');
 
-const PORT = 3000;
+const PORT = 5000;
+
+process.on('exit', (code) => {
+  console.log('Process exiting with code:', code);
+});
+
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT EXCEPTION:', err);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log('UNHANDLED REJECTION:', err);
+});
 
 app.get('/', (req, res) => {
   res.send('Movie Rental Tracker Server is working!');
@@ -16,6 +28,8 @@ app.get('/', (req, res) => {
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use('/', routes);
 //Start Server
+
+app.use(errorHandler);
 
 async function startServer() {
   console.log('starting server: ');
@@ -28,4 +42,5 @@ async function startServer() {
     console.error(error);
   }
 }
+
 startServer();
