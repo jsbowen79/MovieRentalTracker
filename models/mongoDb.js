@@ -10,7 +10,7 @@ async function connectDB() {
     try {
       console.log('initializing database: ');
       await client.connect();
-      db = client.db('CheckRegister');
+      db = client.db('MovieRentalTracker');
       console.log('Connected to MongoDB');
 
       return db;
