@@ -1,6 +1,6 @@
 const rentedModel = require('../models/rentedMovies');
 const UserDataError = require('../errors/userDataError');
-const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 async function rentMovie(req, res) {
   const dateRented = new Date().toLocaleDateString('en-US', {
@@ -11,8 +11,8 @@ async function rentMovie(req, res) {
   const dateReturned = '';
   const out = true;
   const userId = Number(req.params.userId);
-  const movieId = new ObjectID(req.params.movieId);
 
+  const movieId = new ObjectId(req.body.movieId);
   if (userId && movieId) {
     const response = await rentedModel.insertRentedMovie(
       userId,
@@ -28,6 +28,7 @@ async function rentMovie(req, res) {
 }
 
 async function updateTransaction(req, res) {
+  console.log('Running updateTransaction');
   if (!req.params.transId) {
     throw new UserDataError(
       'A transaction id is required to update a transaction.'
@@ -38,13 +39,18 @@ async function updateTransaction(req, res) {
     updates.userId = Number(updates.userId);
   }
   if (updates.movieId != undefined) {
-    updates.movieId = Number(updates.movieId);
+    updates.movieId = new ObjectId(updates.movieId);
   }
   if (updates.out != undefined) {
     updates.out = Boolean(updates.out);
   }
-
-  const transId = Number(req.params.transId);
+  console.log(
+    'transId before: ',
+    req.params.transId,
+    typeof req.params.transId
+  );
+  const transId = new ObjectId(req.params.transId);
+  console.log('transId after: ', transId, typeof transId);
   const result = await rentedModel.enterUpdatedTransaction(transId, updates);
   res.json(result);
 }
@@ -58,17 +64,20 @@ async function listRentedByUser(req, res) {
   if (req.baseUrl.includes('out')) {
     all = false;
   }
-  if (req.body.userId) {
-    const userId = Number(req.body.userId);
+  if (req.params.userId) {
+    const userId = Number(req.params.userId);
 
-    const result = await rentedModel.getRentalsByUser(userId, all);
+    const result = await rentedModel.listRentedMovies(userId, all);
     res.json(result);
+  } else {
+    throw new UserDataError('You must provide a userId.');
   }
 }
 
 async function deleteTransaction(req, res) {
-  if (req.transId) {
-    const transId = Number(req.transId);
+  if (req.params.transId) {
+    const transId = new ObjectId(req.params.transId);
+    console.log('transId: ', transId, typeof transId);
     const response = await rentedModel.removeTransaction(transId);
     res.json(response);
   } else {

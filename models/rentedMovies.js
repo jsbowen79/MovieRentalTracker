@@ -1,5 +1,4 @@
-const { getDB } = require('./models/mongoDb.js');
-const db = getDB();
+const { getDB } = require('./mongoDb.js');
 const MongoDBConnectionError = require('../errors/mongoDBConnectionError.js');
 const NotFoundError = require('../errors/NotFoundError.js');
 const UserDataError = require('../errors/userDataError.js');
@@ -12,6 +11,7 @@ async function insertRentedMovie(
   dateReturned,
   out
 ) {
+  const db = await getDB();
   let username;
   let movieName;
 
@@ -19,6 +19,7 @@ async function insertRentedMovie(
     const usernameRecord = await db
       .collection('users')
       .findOne({ userId: userId });
+
     if (usernameRecord != null) {
       username = usernameRecord.name;
     } else {
@@ -33,26 +34,29 @@ async function insertRentedMovie(
   }
 
   try {
-    const movieRecord = await db.collection('movies').findOne({ _id: movieId });
+    const movieRecord = await db
+      .collection('movieInfo')
+      .findOne({ _id: movieId });
+
     if (movieRecord != null) {
       if (movieRecord.out == 'true') {
         throw new UserDataError('The requested movie is not available');
       } else {
-        movieName = movieRecord.name;
+        movieName = movieRecord.title;
       }
     } else {
       new NotFoundError('The requested movie does not exist in the database.');
     }
   } catch (error) {
     throw new MongoDBConnectionError(
-      `There was a problem retrieving the movie from the database.  Please try again. ${error}`
+      `There was a problem retrieving with the database.  Please try again. ${error}`
     );
   }
-
   try {
     const entry = { userId, movieId, dateRented, dateReturned, out };
     const data = await db.collection('rentedMovies').insertOne(entry);
-    const transId = data.transId;
+    console.log('Data: ', data);
+    const transId = data.insertedId.toString();
     const successString = `Congratulations ${username} has successfully rented ${movieName}.  Your transaction id is ${transId}.`;
     return successString;
   } catch (error) {
@@ -63,11 +67,12 @@ async function insertRentedMovie(
 }
 
 async function enterUpdatedTransaction(transId, updates) {
-  if (await db.collection('rentedMovies').findOne({ transId: transId })) {
+  const db = await getDB();
+  if (await db.collection('rentedMovies').findOne({ _id: transId })) {
     try {
       const result = await db
         .collection('rentedMovies')
-        .updateOne({ transId: transId }, { $set: updates });
+        .updateOne({ _id: transId }, { $set: updates });
       return result;
     } catch (error) {
       if (error instanceof AppError) {
@@ -86,6 +91,7 @@ async function enterUpdatedTransaction(transId, updates) {
 }
 
 async function getAllRentals() {
+  const db = await getDB();
   try {
     const response = await db.collection('rentedMovies').find({}).toArray();
     if (response.length > 0) {
@@ -101,12 +107,15 @@ async function getAllRentals() {
 }
 
 async function listRentedMovies(userId, all) {
+  const db = await getDB();
+  console.log('all: ', all, 'userid: ', userId);
   if (all) {
     try {
-      const result = db
+      const result = await db
         .collection('rentedMovies')
         .find({ userId: userId })
         .toArray();
+      console.log('result: ', result);
       if (result.length > 0) {
         return result;
       } else {
@@ -143,11 +152,12 @@ async function listRentedMovies(userId, all) {
 }
 
 async function removeTransaction(transId) {
-  if (await db.collection.findOne({ transId: transId })) {
+  const db = await getDB();
+  if (await db.collection('rentedMovies').findOne({ _id: transId })) {
     try {
       const response = db
         .collection('rentedMovies')
-        .deleteOne({ transId: transId });
+        .deleteOne({ _id: transId });
       return response;
     } catch (error) {
       if (error instanceof AppError) {
