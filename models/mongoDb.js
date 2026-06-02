@@ -10,8 +10,9 @@ async function connectDB() {
     try {
       console.log('initializing database: ');
       await client.connect();
-      db = client.db('MovieRentalTracker');
+      db = client.db();
       console.log('Connected to MongoDB');
+      // console.log('db inside Mongo: ', db);
 
       return db;
     } catch {
@@ -22,9 +23,9 @@ async function connectDB() {
   }
 }
 
-function getDB() {
+async function getDB() {
   if (!db) {
-    connectDB();
+    await connectDB();
   }
   return db;
 }
