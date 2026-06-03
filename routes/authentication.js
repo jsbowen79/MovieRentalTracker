@@ -1,14 +1,28 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
+const passport = require('passport');
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
+// GitHub authentication route
+router.get(
+  '/github',
+  passport.authenticate('github', {
+    scope: ['user:email'],
+  })
+);
 
-router.get('/github', notImplemented);
-router.get('/github/redirect', notImplemented);
-router.get('/logout', notImplemented);
+// GitHub callback route
+router.get(
+  '/github/callback',
+
+  passport.authenticate('github', {
+    failureRedirect: '/',
+  }),
+
+  (req, res) => {
+    res.json({
+      message: 'GitHub login successful',
+      user: req.user,
+    });
+  }
+);
 
 module.exports = router;

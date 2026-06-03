@@ -13,5 +13,13 @@ routes.use('/movies', availableMoviesRoute);
 routes.use('/rented', rentedMovieRoute);
 routes.use('/info', movieInformationRoute);
 routes.use('/review', reviewsRoute);
+routes.get(
+  '/',
+  asyncHandler(async (req, res) => {
+    res.json({
+      message: 'Welcome to the Movie Rental Tracker API',
+    });
+  })
+);
 
 module.exports = routes;
