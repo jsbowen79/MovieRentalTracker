@@ -7,9 +7,7 @@
   },
   "host": "localhost:5000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/": {
       "get": {
@@ -23,9 +21,7 @@
     },
     "/user/": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "description": "",
         "parameters": [
           {
@@ -63,9 +59,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "description": "",
         "responses": {
           "200": {
@@ -79,9 +73,7 @@
     },
     "/user/{userId}": {
       "put": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "description": "",
         "parameters": [
           {
@@ -128,9 +120,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "description": "",
         "parameters": [
           {
@@ -156,9 +146,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "description": "",
         "parameters": [
           {
@@ -270,6 +258,7 @@
     },
     "/rented/{userId}": {
       "post": {
+        "tags": ["Rented Movies"],
         "description": "Add a movie rental to a user's record",
         "parameters": [
           {
@@ -334,6 +323,7 @@
       },
 
       "get": {
+        "tags": ["Rented Movies"],
         "description": "List all of the movies that an individual user has rented",
         "parameters": [
           {
@@ -358,6 +348,7 @@
     },
     "/rented/": {
       "get": {
+        "tags": ["Rented Movies"],
         "description": "Get a list of all movies in the Rented Movies database.",
         "responses": {
           "404": {
@@ -371,6 +362,7 @@
     },
     "/rented/out/{userId}": {
       "get": {
+        "tags": ["Rented Movies"],
         "description": "Get a list of movies currently listed as in the user's possession",
         "parameters": [
           {
@@ -392,6 +384,7 @@
     },
     "/rented/{transId}": {
       "delete": {
+        "tags": ["Rented Movies"],
         "description": "Delete a transaction from the database.  Admin authorization required",
         "parameters": [
           {
@@ -417,6 +410,7 @@
         }
       },
       "put": {
+        "tags": ["Rented Movies"],
         "description": "Update a rental transaction in the database",
         "parameters": [
           {
