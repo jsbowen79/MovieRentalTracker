@@ -23,6 +23,8 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use('/', routes);
 //Start Server
 
+app.use(errorHandler);
+
 async function startServer() {
   console.log('starting server: ');
   try {
@@ -34,4 +36,5 @@ async function startServer() {
     console.error(error);
   }
 }
+
 startServer();
