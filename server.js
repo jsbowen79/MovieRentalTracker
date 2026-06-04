@@ -5,8 +5,14 @@ const errorHandler = require('./errors/errorHandler.js');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDoc = require('./swagger-output.json');
 const routes = require('./routes/index.js');
+const bodyParser = require('body-parser');
 
-const PORT = 3000;
+// Middleware
+
+const PORT = 5000;
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Movie Rental Tracker Server is working!');

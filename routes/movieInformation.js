@@ -8,10 +8,11 @@ const notImplemented = (req, res) => {
   });
 };
 
-router.post('/', notImplemented);
-router.put('/:movieId', notImplemented);
+
 router.get('/', asyncHandler(movieInfoController.getAllMovies));
-router.get('/:movieId', notImplemented);
-router.delete('/:movieId', notImplemented);
+router.get('/:id', asyncHandler(movieInfoController.getMovieById));
+router.put('/:id', asyncHandler(movieInfoController.updateMovieInfo));
+router.post('/', asyncHandler(movieInfoController.addMovie));
+router.delete('/:id', asyncHandler(movieInfoController.deleteMovie));
 
 module.exports = router;

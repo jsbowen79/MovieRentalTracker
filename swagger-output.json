@@ -5,7 +5,7 @@
     "description": "Allows for CRUD operations involved in tracking Operating a Movie Rental Business",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -269,17 +269,55 @@
         }
       }
     },
-    "/info/": {
-      "post": {
-        "description": "",
+    "/info": {
+      "get": {
+        "description": "Gets all movies and their information",
         "responses": {
           "501": {
             "description": "Not Implemented"
           }
         }
       },
-      "get": {
-        "description": "",
+      "post": {
+        "description": "Adds a new movie to the database",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema" : {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "director": {
+                  "type": "string"
+                },
+                "releaseYear": {
+                  "type": "integer"
+                },
+                "genre": {
+                  "type": "string"
+                },
+                "main_actors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "length_minutes": {
+                  "type": "integer"
+                },
+                "studio": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "501": {
             "description": "Not Implemented"
@@ -288,8 +326,8 @@
       }
     },
     "/info/{movieId}": {
-      "put": {
-        "description": "",
+      "get": {
+        "description": "Get a single movie and its information based on the its id",
         "parameters": [
           {
             "name": "movieId",
@@ -304,14 +342,50 @@
           }
         }
       },
-      "get": {
-        "description": "",
+      "put": {
+        "description": "Update an existing movie's information based on its id",
         "parameters": [
           {
             "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema" : {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "director": {
+                  "type": "string"
+                },
+                "releaseYear": {
+                  "type": "integer"
+                },
+                "genre": {
+                  "type": "string"
+                },
+                "main_actors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "length_minutes": {
+                  "type": "integer"
+                },
+                "studio": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -321,7 +395,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete a movie from the database based on its id",
         "parameters": [
           {
             "name": "movieId",
