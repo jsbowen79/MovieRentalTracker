@@ -16,13 +16,12 @@ async function insertRentedMovie(
   let movieName;
 
   try {
-    console.log('UserId in Model: ', userId);
     const usernameRecord = await db
       .collection('users')
       .findOne({ _id: userId });
 
     if (usernameRecord != null) {
-      username = usernameRecord.name;
+      username = usernameRecord.username;
     } else {
       throw new NotFoundError(
         'No user matching that userId exists.  Please try again.'
