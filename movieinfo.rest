@@ -1,0 +1,38 @@
+### Get all movies and their information
+GET http://localhost:5000/info
+
+### Get a single movie and its information based on the its id
+GET http://localhost:5000/info/6a1d6480da0dada2e2ffaba0
+
+### Add a new movie to the database
+POST http://localhost:5000/info
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "director": "Christopher Nolan",
+  "releaseYear": 2010,
+  "genre": "Science Fiction",
+  "main_actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
+  "length_minutes": 148,
+  "studio": "Warner Bros.",
+  "language": "French"
+}
+
+### Update an existing movie's information based on its id
+PUT http://localhost:5000/info/6a21675d16e7b4b975452b19
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "director": "Christopher Nolan",
+  "releaseYear": 2015,
+  "genre": "Science Fiction",
+  "main_actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
+  "length_minutes": 148,
+  "studio": "Warner Bros.",
+  "language": "Spanish"
+}
+
+### Delete a movie from the database based on its id
+DELETE http://localhost:5000/info/6a21675d16e7b4b975452b19
