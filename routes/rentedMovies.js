@@ -1,16 +1,12 @@
 const router = require('express').Router();
+const asyncHandler = require('../errors/asyncHandler.js');
+const rentController = require('../controllers/rentedMovies.js');
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
-
-router.post('/:userId', notImplemented);
-router.put('/:userId', notImplemented);
-router.get('/', notImplemented);
-router.get('/:userId', notImplemented);
-router.get('/out/:userId', notImplemented);
-router.delete('/:transId', notImplemented);
+router.post('/:userId', asyncHandler(rentController.rentMovie));
+router.put('/:transId', asyncHandler(rentController.updateTransaction));
+router.get('/', asyncHandler(rentController.listRentedMovies));
+router.get('/:userId', asyncHandler(rentController.listRentedByUser));
+router.get('/out/:userId', asyncHandler(rentController.listRentedByUser));
+router.delete('/:transId', asyncHandler(rentController.deleteTransaction));
 
 module.exports = router;

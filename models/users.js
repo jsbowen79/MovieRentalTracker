@@ -1,3 +1,10 @@
+const { getDB } = require('./mongoDb');
+
+const getUsersCollection = async () => {
+  const db = await getDB();
+  return db.collection('users');
+};
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -15,4 +22,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema, getUsersCollection);
