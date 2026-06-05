@@ -54,10 +54,13 @@ const createUser = async (req, res) => {
     }
 
     const user = {
-      customerName: req.body.customerName,
+      githubId: req.body.githubId,
+      username: req.body.customerName,
+      profileUrl: req.body.profileUrl,
       address: req.body.address,
       phone: req.body.phone,
       email: req.body.email,
+      role: req.body.role,
     };
 
     const result = await usersCollection.insertOne(user);
