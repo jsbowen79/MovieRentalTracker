@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
+const AsyncHandler = require('../errors/AsyncHandler.js');
 const movieInfoController = require('../controllers/movieInformation.js');
 
-router.get('/', asyncHandler(movieInfoController.getAllMovies));
-router.get('/:id', asyncHandler(movieInfoController.getMovieById));
-router.put('/:id', asyncHandler(movieInfoController.updateMovieInfo));
-router.post('/', asyncHandler(movieInfoController.addMovie));
-router.delete('/:id', asyncHandler(movieInfoController.deleteMovie));
+router.get('/', AsyncHandler(movieInfoController.getAllMovies));
+router.get('/:id', AsyncHandler(movieInfoController.getMovieById));
+router.put('/:id', AsyncHandler(movieInfoController.updateMovieInfo));
+router.post('/', AsyncHandler(movieInfoController.addMovie));
+router.delete('/:id', AsyncHandler(movieInfoController.deleteMovie));
 
 module.exports = router;
