@@ -7,7 +7,7 @@
   },
 
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": ["https", "http"],
   "paths": {
     "/": {
       "get": {
