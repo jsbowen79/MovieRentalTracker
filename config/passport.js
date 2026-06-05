@@ -24,6 +24,9 @@ passport.use(
             githubId: profile.id,
             username: profile.username,
             profileUrl: profile.profileUrl,
+            address: '',
+            phone: '',
+            email: '',
             role: 'user',
           };
 
