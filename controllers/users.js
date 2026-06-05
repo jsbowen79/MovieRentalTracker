@@ -55,7 +55,7 @@ const createUser = async (req, res) => {
 
     const user = {
       githubId: req.body.githubId,
-      username: req.body.customerName,
+      username: req.body.username,
       profileUrl: req.body.profileUrl,
       address: req.body.address,
       phone: req.body.phone,
