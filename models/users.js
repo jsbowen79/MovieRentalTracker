@@ -16,3 +16,13 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
+const { getDB } = require('./mongoDb');
+
+const getUsersCollection = async () => {
+    const db = await getDB();
+    return db.collection('users');
+};
+
+module.exports = {
+    getUsersCollection
+};

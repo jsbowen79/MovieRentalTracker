@@ -11,8 +11,8 @@ The base file structure has been created.
 The models, routes, and controllers folders contain a file for each route task assigned.
 The routes have been created with a stub function.
 The swagger-autogen has been run with the output file created including all routes.  
-The when running, the server is live at port 3000 and the api-docs can be accessed at
-http://localhost:3000/api-docs
+The when running, the server is live at port 5000 and the api-docs can be accessed at
+http://localhost:5000/api-docs
 
 The project has been uploaded to GitHub.
 The MongoDB database has been created.  
