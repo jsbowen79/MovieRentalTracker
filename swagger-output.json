@@ -86,6 +86,12 @@
         "description": "Update a user in the Database by userId",
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {
