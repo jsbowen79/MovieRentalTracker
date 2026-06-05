@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const client = new MongoClient(process.env.MONGO_URI);
-const mongoDBConnectionError = require('../errors/mongoDBConnectionError');
+const mongoDBConnectionError = require('../errors/MongoDBConnectionError');
 
 let db;
 

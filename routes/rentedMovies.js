@@ -1,12 +1,30 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
+const asyncHandler = require('../errors/AsyncHandler.js');
 const rentController = require('../controllers/rentedMovies.js');
+const requireAuth = require('../middleware/requireAuth.js');
+const authorizeUser = require('../middleware/authorizeUser.js');
 
-router.post('/:userId', asyncHandler(rentController.rentMovie));
-router.put('/:transId', asyncHandler(rentController.updateTransaction));
-router.get('/', asyncHandler(rentController.listRentedMovies));
-router.get('/:userId', asyncHandler(rentController.listRentedByUser));
-router.get('/out/:userId', asyncHandler(rentController.listRentedByUser));
-router.delete('/:transId', asyncHandler(rentController.deleteTransaction));
+router.post('/:userId', requireAuth, asyncHandler(rentController.rentMovie));
+router.put(
+  '/:transId',
+  requireAuth,
+  asyncHandler(rentController.updateTransaction)
+);
+router.get('/', requireAuth, asyncHandler(rentController.listRentedMovies));
+router.get(
+  '/:userId',
+  authorizeUser('admin'),
+  asyncHandler(rentController.listRentedByUser)
+);
+router.get(
+  '/out/:userId',
+  authorizeUser('admin'),
+  asyncHandler(rentController.listRentedByUser)
+);
+router.delete(
+  '/:transId',
+  requireAuth,
+  asyncHandler(rentController.deleteTransaction)
+);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const { getDB } = require('./mongoDb.js');
-const MongoDBConnectionError = require('../errors/mongoDBConnectionError.js');
+const MongoDBConnectionError = require('../errors/MongoDBConnectionError.js');
 const NotFoundError = require('../errors/NotFoundError.js');
-const UserDataError = require('../errors/userDataError.js');
-const AppError = require('../errors/appError.js');
+const UserDataError = require('../errors/UserDataError.js');
+const AppError = require('../errors/AppError.js');
 
 async function insertRentedMovie(
   userId,
@@ -16,9 +16,10 @@ async function insertRentedMovie(
   let movieName;
 
   try {
+    console.log('UserId in Model: ', userId);
     const usernameRecord = await db
       .collection('users')
-      .findOne({ userId: userId });
+      .findOne({ _id: userId });
 
     if (usernameRecord != null) {
       username = usernameRecord.name;
@@ -55,7 +56,6 @@ async function insertRentedMovie(
   try {
     const entry = { userId, movieId, dateRented, dateReturned, out };
     const data = await db.collection('rentedMovies').insertOne(entry);
-    console.log('Data: ', data);
     const transId = data.insertedId.toString();
     const successString = `Congratulations ${username} has successfully rented ${movieName}.  Your transaction id is ${transId}.`;
     return successString;
@@ -131,7 +131,7 @@ async function listRentedMovies(userId, all) {
     }
   } else {
     try {
-      const result = db
+      const result = await db
         .collection('rentedMovies')
         .find({ userId: userId, out: true })
         .toArray();

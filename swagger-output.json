@@ -265,7 +265,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "number"
+            "type": "string"
           },
           {
             "name": "body",
@@ -330,7 +330,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "number"
+            "type": "string"
           }
         ],
         "responses": {
@@ -369,7 +369,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "number"
+            "type": "string"
           }
         ],
         "responses": {
@@ -430,7 +430,7 @@
                   "type": "string"
                 },
                 "userId": {
-                  "type": "number"
+                  "type": "string"
                 },
                 "out": {
                   "type": "boolean"

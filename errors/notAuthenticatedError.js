@@ -1,4 +1,4 @@
-const AppError = require('./appError.js');
+const AppError = require('./AppError.js');
 
 class NotAuthenticatedError extends AppError {
   resource = null;

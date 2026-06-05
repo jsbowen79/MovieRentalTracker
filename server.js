@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const { getDB } = require('./models/mongoDb.js');
@@ -5,14 +6,37 @@ const errorHandler = require('./errors/errorHandler.js');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDoc = require('./swagger-output.json');
 const routes = require('./routes/index.js');
+const session = require('express-session');
+const passport = require('./config/passport');
+const MongoStore = require('connect-mongo').default;
+const PORT = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 
 // Middleware
 
-const PORT = 5000;
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'super-secret-key',
+    resave: false,
+    saveUninitialized: false,
+
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: 'sessions',
+    }),
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60,
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.send('Movie Rental Tracker Server is working!');
