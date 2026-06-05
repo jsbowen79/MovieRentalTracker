@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
 
 const notImplemented = (req, res) => {
   res.status(501).json({

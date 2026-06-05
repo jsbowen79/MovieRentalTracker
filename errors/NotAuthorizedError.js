@@ -1,11 +1,11 @@
 const AppError = require('./AppError.js');
 
-class NotFoundError extends AppError {
+class NotAuthorizedError extends AppError {
   resource = null;
   constructor(message, resource) {
-    super(message, 404);
+    super(message, 403);
     this.resource = resource;
   }
 }
 
-module.exports = NotFoundError;
+module.exports = NotAuthorizedError;

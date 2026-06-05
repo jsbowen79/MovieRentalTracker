@@ -1,6 +1,32 @@
 const { getDB } = require('./mongoDb');
 
 const getUsersCollection = async () => {
+  const db = await getDB();
+  return db.collection('users');
+};
+
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  githubId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  profileUrl: {
+    type: String,
+  },
+});
+
+module.exports = mongoose.model('User', userSchema);
+=========
+const { getDB } = require('./mongoDb');
+
+const getUsersCollection = async () => {
     const db = await getDB();
     return db.collection('users');
 };
@@ -8,3 +34,4 @@ const getUsersCollection = async () => {
 module.exports = {
     getUsersCollection
 };
+>>>>>>>>> Temporary merge branch 2
