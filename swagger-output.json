@@ -481,7 +481,7 @@
           {
             "name": "body",
             "in": "body",
-            "schema" : {
+            "schema": {
               "type": "object",
               "properties": {
                 "title": {
@@ -551,7 +551,7 @@
           {
             "name": "body",
             "in": "body",
-            "schema" : {
+            "schema": {
               "type": "object",
               "properties": {
                 "title": {

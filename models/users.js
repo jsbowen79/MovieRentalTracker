@@ -5,23 +5,6 @@ const getUsersCollection = async () => {
   return db.collection('users');
 };
 
-const mongoose = require('mongoose');
-
-const userSchema = new mongoose.Schema({
-  githubId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  profileUrl: {
-    type: String,
-  },
-});
-
 module.exports = {
   getUsersCollection,
 };
