@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
+const asyncHandler = require('../errors/AsyncHandler.js');
 const usersRoute = require('./users.js');
 const authenticationRoute = require('./authentication.js');
 const availableMoviesRoute = require('./availableMovies.js');

@@ -8,8 +8,9 @@ const swaggerDoc = require('./swagger-output.json');
 const routes = require('./routes/index.js');
 const session = require('express-session');
 const passport = require('./config/passport');
-
+const MongoStore = require('connect-mongo').default;
 const PORT = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,6 +19,15 @@ app.use(
     secret: process.env.SESSION_SECRET || 'super-secret-key',
     resave: false,
     saveUninitialized: false,
+
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: 'sessions',
+    }),
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60,
+    },
   })
 );
 

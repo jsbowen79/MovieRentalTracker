@@ -18,6 +18,9 @@ router.get(
   }),
 
   (req, res) => {
+    console.log('Session ID:', req.sessionID);
+    console.log(req.session);
+    console.log(req.user);
     res.json({
       message: 'GitHub login successful',
       user: req.user,

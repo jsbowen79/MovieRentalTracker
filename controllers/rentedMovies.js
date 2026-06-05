@@ -1,8 +1,10 @@
 const rentedModel = require('../models/rentedMovies');
-const UserDataError = require('../errors/userDataError');
+const UserDataError = require('../errors/UserDataError');
 const { ObjectId } = require('mongodb');
 
 async function rentMovie(req, res) {
+  console.log('in rentMovie');
+  console.log(req.params.userId, typeof req.params.userId);
   const dateRented = new Date().toLocaleDateString('en-US', {
     month: '2-digit',
     day: '2-digit',
@@ -10,8 +12,8 @@ async function rentMovie(req, res) {
   });
   const dateReturned = '';
   const out = true;
-  const userId = Number(req.params.userId);
-
+  const userId = new ObjectId(req.params.userId);
+  console.log('UserId: ', userId);
   const movieId = new ObjectId(req.body.movieId);
   if (userId && movieId) {
     const response = await rentedModel.insertRentedMovie(
@@ -36,7 +38,7 @@ async function updateTransaction(req, res) {
   }
   const updates = { ...req.body };
   if (updates.userId != undefined) {
-    updates.userId = Number(updates.userId);
+    updates.userId = new ObjectId(updates.userId);
   }
   if (updates.movieId != undefined) {
     updates.movieId = new ObjectId(updates.movieId);
@@ -44,13 +46,8 @@ async function updateTransaction(req, res) {
   if (updates.out != undefined) {
     updates.out = Boolean(updates.out);
   }
-  console.log(
-    'transId before: ',
-    req.params.transId,
-    typeof req.params.transId
-  );
+
   const transId = new ObjectId(req.params.transId);
-  console.log('transId after: ', transId, typeof transId);
   const result = await rentedModel.enterUpdatedTransaction(transId, updates);
   res.json(result);
 }
@@ -61,12 +58,14 @@ async function listRentedMovies(req, res) {
 }
 async function listRentedByUser(req, res) {
   let all = true;
-  if (req.baseUrl.includes('out')) {
+  console.log(req.originalUrl);
+  console.log('Out included: ', req.originalUrl.includes('out'));
+  if (req.originalUrl.includes('out')) {
     all = false;
   }
   if (req.params.userId) {
-    const userId = Number(req.params.userId);
-
+    const userId = new ObjectId(req.params.userId);
+    console.log('All: ', all);
     const result = await rentedModel.listRentedMovies(userId, all);
     res.json(result);
   } else {
@@ -77,7 +76,6 @@ async function listRentedByUser(req, res) {
 async function deleteTransaction(req, res) {
   if (req.params.transId) {
     const transId = new ObjectId(req.params.transId);
-    console.log('transId: ', transId, typeof transId);
     const response = await rentedModel.removeTransaction(transId);
     res.json(response);
   } else {
