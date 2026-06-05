@@ -1,14 +1,18 @@
+
 const router = require('express').Router();
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
+const availableMoviesController = require('../controllers/availableMovies.js');
 
-router.post('/', notImplemented);
-router.get('/:genreId', notImplemented);
-router.get('/', notImplemented);
-router.delete('/:userId', notImplemented);
+// CREATE MOVIE
+router.post('/', asyncHandler(availableMoviesController.createMovie));
+
+// GET ALL MOVIES
+router.get('/', asyncHandler(availableMoviesController.getAllMovies));
+
+// GET BY GENRE
+router.get('/:genreId', asyncHandler(availableMoviesController.getByGenre));
+
+// DELETE MOVIE
+router.delete('/:userId', asyncHandler(availableMoviesController.deleteMovie));
 
 module.exports = router;
