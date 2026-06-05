@@ -49,7 +49,7 @@ const createUser = async (req, res) => {
   try {
     const usersCollection = await getUsersCollection();
 
-    if (!req.body.customerName || !req.body.email) {
+    if (!req.body.username || !req.body.email) {
       return res.status(400).json({ message: 'Missing the required fields' });
     }
 
@@ -66,11 +66,14 @@ const createUser = async (req, res) => {
     const result = await usersCollection.insertOne(user);
 
     res.status(201).json({
+      githubId: user.githubId,
       _id: result.insertedId,
-      customerName: user.customerName,
+      username: user.customerName,
+      profileUrl: user.profileUrl,
       address: user.address,
       phone: user.phone,
       email: user.email,
+      role: user.role,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -88,23 +91,12 @@ const updateUser = async (req, res) => {
     if (!ObjectId.isValid(req.params.userId)) {
       return res.status(400).json({ message: 'userId is not valid' });
     }
-
-    if (!req.body.customerName || !req.body.email) {
-      return res.status(400).json({ message: 'Missing the required fields' });
-    }
-
+    const updates = { ...req.body };
     const userId = new ObjectId(req.params.userId);
 
     const result = await usersCollection.updateOne(
       { _id: userId },
-      {
-        $set: {
-          customerName: req.body.customerName,
-          address: req.body.address,
-          phone: req.body.phone,
-          email: req.body.email,
-        },
-      }
+      { $set: updates }
     );
 
     if (result.matchedCount === 0) {
