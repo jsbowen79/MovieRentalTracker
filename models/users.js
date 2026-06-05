@@ -21,5 +21,17 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 });
-const User = mongoose.model('User', userSchema);
-module.exports = { User, getUsersCollection };
+
+module.exports = mongoose.model('User', userSchema);
+=========
+const { getDB } = require('./mongoDb');
+
+const getUsersCollection = async () => {
+    const db = await getDB();
+    return db.collection('users');
+};
+
+module.exports = {
+    getUsersCollection
+};
+>>>>>>>>> Temporary merge branch 2
