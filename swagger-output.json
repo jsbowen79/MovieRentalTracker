@@ -22,7 +22,7 @@
     "/user/": {
       "post": {
         "tags": ["Users"],
-        "description": "",
+        "description": "Add a user to the Database",
         "parameters": [
           {
             "name": "body",
@@ -69,7 +69,7 @@
       },
       "get": {
         "tags": ["Users"],
-        "description": "",
+        "description": "Retrieve a list of users from the database",
         "responses": {
           "200": {
             "description": "OK"
@@ -83,30 +83,39 @@
     "/user/{userId}": {
       "put": {
         "tags": ["Users"],
-        "description": "",
-        "properties": {
-          "githubId": {
-            "example": "any"
-          },
-          "username": {
-            "example": "any"
-          },
-          "profileUrl": {
-            "example": "any"
-          },
-          "address": {
-            "example": "any"
-          },
-          "phone": {
-            "example": "any"
-          },
-          "email": {
-            "example": "any"
-          },
-          "role": {
-            "example": "user"
+        "description": "Update a user in the Database by userId",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "githubId": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                },
+                "profileUrl": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "user"
+                }
+              }
+            }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
