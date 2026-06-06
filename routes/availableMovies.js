@@ -1,6 +1,5 @@
-
 const router = require('express').Router();
-
+const asyncHandler = require('../errors/asyncHandler');
 const availableMoviesController = require('../controllers/availableMovies.js');
 
 // CREATE MOVIE
@@ -12,7 +11,10 @@ router.get('/', asyncHandler(availableMoviesController.getAllMovies));
 // GET BY GENRE
 router.get('/:genreId', asyncHandler(availableMoviesController.getByGenre));
 
+// UPDATE MOVIE 
+router.put('/:id', asyncHandler(availableMoviesController.updateMovie));
+
 // DELETE MOVIE
-router.delete('/:userId', asyncHandler(availableMoviesController.deleteMovie));
+router.delete('/:id', asyncHandler(availableMoviesController.deleteMovie));
 
 module.exports = router;

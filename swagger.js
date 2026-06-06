@@ -7,6 +7,7 @@ const doc = {
       'Allows for CRUD operations involved in tracking Operating a Movie Rental Business',
   },
   host: 'localhost:5000',
+  schemes: ['http']
 };
 
 const outputFile = './swagger-output.json';

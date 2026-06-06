@@ -7,7 +7,9 @@
   },
   "host": "localhost:5000",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/": {
       "get": {
@@ -21,7 +23,9 @@
     },
     "/user/": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -30,16 +34,25 @@
             "schema": {
               "type": "object",
               "properties": {
-                "customerName": {
+                "username": {
                   "example": "any"
                 },
                 "email": {
+                  "example": "any"
+                },
+                "githubId": {
+                  "example": "any"
+                },
+                "profileUrl": {
                   "example": "any"
                 },
                 "address": {
                   "example": "any"
                 },
                 "phone": {
+                  "example": "any"
+                },
+                "role": {
                   "example": "any"
                 }
               }
@@ -59,7 +72,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -73,7 +88,9 @@
     },
     "/user/{userId}": {
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -81,27 +98,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "customerName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
-                },
-                "phone": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -120,7 +116,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -146,7 +144,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -176,28 +176,18 @@
       "get": {
         "description": "",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/auth/github/redirect": {
+    "/auth/github/callback": {
       "get": {
         "description": "",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "get": {
-        "description": "",
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -206,16 +196,16 @@
       "post": {
         "description": "",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       },
       "get": {
         "description": "",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -232,99 +222,65 @@
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/movies/{userId}": {
-      "delete": {
+    "/movies/{id}": {
+      "put": {
         "description": "",
         "parameters": [
           {
-            "name": "userId",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
     },
     "/rented/{userId}": {
       "post": {
-        "tags": ["Rented Movies"],
-        "description": "Add a movie rental to a user's record",
+        "description": "",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "movieId": {
-                  "type": "string"
-                }
-              },
-              "required": ["movieId"]
-            }
           }
         ],
         "responses": {
-          "400": {
-            "description": "UserDataError",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Please provide the movieId and the userId, The requested movie is not available"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NotFoundError--No user matching that userId exists.  Please try again.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "No user matching that userId Exists. The requested movie is not available. The requested movie does not exist in the database."
-                    }
-                  }
-                }
-              }
-            }
-          },
-
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem with the database. Please try again."
+          "default": {
+            "description": ""
           }
         }
       },
-
       "get": {
-        "tags": ["Rented Movies"],
-        "description": "List all of the movies that an individual user has rented",
+        "description": "",
         "parameters": [
           {
             "name": "userId",
@@ -334,36 +290,59 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "UserDataError--You must provide a userId."
-          },
-          "404": {
-            "description": "NotFoundError--This user has rented no movies."
-          },
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem connecting with the Database."
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/rented/{transId}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "transId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "transId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
     },
     "/rented/": {
       "get": {
-        "tags": ["Rented Movies"],
-        "description": "Get a list of all movies in the Rented Movies database.",
+        "description": "",
         "responses": {
-          "404": {
-            "description": "NotFoundError--There are no entries in the database. "
-          },
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem with the database.  Please try again."
+          "default": {
+            "description": ""
           }
         }
       }
     },
     "/rented/out/{userId}": {
       "get": {
-        "tags": ["Rented Movies"],
-        "description": "Get a list of movies currently listed as in the user's possession",
+        "description": "",
         "parameters": [
           {
             "name": "userId",
@@ -373,147 +352,60 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "UserDataError--You must provide a userId"
-          },
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem with the database. Please try again."
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/rented/{transId}": {
-      "delete": {
-        "tags": ["Rented Movies"],
-        "description": "Delete a transaction from the database.  Admin authorization required",
-        "parameters": [
-          {
-            "name": "transId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+    "/info/": {
+      "get": {
+        "description": "",
         "responses": {
-          "400": {
-            "description": "UserDataError--You must include a transaction Id to delete a transaction"
-          },
-          "401": {
-            "description": "UnauthorizedError--You must be logged in as an administrator to delete a transaction."
-          },
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem with the Database.  Please try again."
-          },
-          "404": {
-            "description": "No transaction with that transaction Id exists."
+          "default": {
+            "description": ""
           }
         }
       },
-      "put": {
-        "tags": ["Rented Movies"],
-        "description": "Update a rental transaction in the database",
-        "parameters": [
-          {
-            "name": "transId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": false,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "movieId": {
-                  "type": "string"
-                },
-                "userId": {
-                  "type": "string"
-                },
-                "out": {
-                  "type": "boolean"
-                },
-                "dateReturned": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "UserDataError",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "There is no transaction with that Id. A transaction Id is required to update a transaction."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "MongoDBConnectionError--There was a problem with the database. Update failed."
-          }
-        }
-      }
-    },
-
-    "/info/": {
       "post": {
         "description": "",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
-          }
-        }
-      },
-      "get": {
-        "description": "",
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/info/{movieId}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "movieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
-          }
-        }
-      },
+    "/info/{id}": {
       "get": {
         "description": "",
         "parameters": [
           {
-            "name": "movieId",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       },
@@ -521,15 +413,15 @@
         "description": "",
         "parameters": [
           {
-            "name": "movieId",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "default": {
+            "description": ""
           }
         }
       }

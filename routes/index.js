@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const asyncHandler = require('../errors/AsyncHandler.js');
+const AsyncHandler = require('../errors/AsyncHandler.js');
 const usersRoute = require('./users.js');
 const authenticationRoute = require('./authentication.js');
 const availableMoviesRoute = require('./availableMovies.js');
@@ -15,7 +15,7 @@ routes.use('/info', movieInformationRoute);
 routes.use('/review', reviewsRoute);
 routes.get(
   '/',
-  asyncHandler(async (req, res) => {
+  AsyncHandler(async (req, res) => {
     res.json({
       message: 'Welcome to the Movie Rental Tracker API',
     });
