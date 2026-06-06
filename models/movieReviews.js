@@ -1,66 +1,103 @@
-const { ObjectId } = require('mongodb');
-const { getDB } = require('./mongoDb');
+const { getDB } = require('./mongoDb.js');
+const MongoDBConnectionError = require('../errors/MongoDBConnectionError.js');
+const NotFoundError = require('../errors/NotFoundError.js');
+const AppError = require('../errors/AppError.js');
 
-const collectionName = 'movieReviews';
-
-// Create review
-async function createReview(review) {
+async function insertReview(movieId, review, dateReviewed) {
   const db = await getDB();
-  const result = await db.collection(collectionName).insertOne({
-    ...review,
-    movieId: new ObjectId(review.movieId),
-    createdAt: new Date(),
-  });
+  let movieName;
 
-  return result;
+  try {
+    const movieRecord = await db
+      .collection('movieInfo')
+      .findOne({ _id: movieId });
+
+    if (movieRecord) {
+      movieName = movieRecord.title;
+    } else {
+      throw new NotFoundError(
+        'The movie you are trying to review does not exist.'
+      );
+    }
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    throw new MongoDBConnectionError(
+      `There was a problem retrieving the movie from the database. ${error}`
+    );
+  }
+
+  try {
+    const entry = {
+      movieId,
+      review,
+      dateReviewed,
+    };
+
+    const data = await db.collection('movieReviews').insertOne(entry);
+    const reviewId = data.insertedId.toString();
+
+    return `Review successfully added for ${movieName}. Review id is ${reviewId}.`;
+  } catch (error) {
+    throw new MongoDBConnectionError(
+      `There was a problem saving the review to the database. ${error}`
+    );
+  }
 }
 
-// Get all reviews
-async function getAllReviews() {
-  const db = await getDB();
-  return await db.collection(collectionName).find().toArray();
-}
-
-// Get reviews for a movie
 async function getReviewsByMovie(movieId) {
   const db = await getDB();
-  return await db
-    .collection(collectionName)
-    .find({
-      movieId: new ObjectId(movieId),
-    })
-    .toArray();
+
+  try {
+    const reviews = await db
+      .collection('movieReviews')
+      .find({ movieId: movieId })
+      .toArray();
+
+    if (reviews.length > 0) {
+      return reviews;
+    }
+
+    throw new NotFoundError('No reviews found for this movie.');
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    throw new MongoDBConnectionError(
+      `There was a problem retrieving reviews from the database. ${error}`
+    );
+  }
 }
 
-// Get single review
-async function getReviewById(id) {
+async function deleteReviewsByMovie(movieId) {
   const db = await getDB();
-  return await db.collection(collectionName).findOne({
-    _id: new ObjectId(id),
-  });
-}
 
-// Update review
-async function updateReview(id, updateData) {
-  const db = await getDB();
-  return await db
-    .collection(collectionName)
-    .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
-}
+  try {
+    const result = await db
+      .collection('movieReviews')
+      .deleteMany({ movieId: movieId });
 
-// Delete review
-async function deleteReview(id) {
-  const db = await getDB();
-  return await db.collection(collectionName).deleteOne({
-    _id: new ObjectId(id),
-  });
+    if (result.deletedCount > 0) {
+      return result;
+    }
+
+    throw new NotFoundError('No reviews found to delete for this movie.');
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    throw new MongoDBConnectionError(
+      `There was a problem deleting reviews from the database. ${error}`
+    );
+  }
 }
 
 module.exports = {
-  createReview,
-  getAllReviews,
+  insertReview,
   getReviewsByMovie,
-  getReviewById,
-  updateReview,
-  deleteReview,
+  deleteReviewsByMovie,
 };

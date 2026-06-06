@@ -1,36 +1,27 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler');
-const controller = require('../controllers/movieReviews');
+const asyncHandler = require('../errors/asyncHandler.js');
+const reviewController = require('../controllers/movieReviews.js');
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
+router.post('/:movieId', asyncHandler(reviewController.addReview));
+// #swagger.tags = ['Reviews']
+// #swagger.description = 'Add a review for a movie by movieId'
+// #swagger.parameters['movieId'] = { in: 'path', required: true, description: 'Movie ID' }
+// #swagger.parameters['body'] = {
+//   in: 'body',
+//   required: true,
+//   schema: {
+//     review: 'This movie was excellent.'
+//   }
+// }
 
+router.get('/:movieId', asyncHandler(reviewController.listReviewsByMovie));
+// #swagger.tags = ['Reviews']
+// #swagger.description = 'Get all reviews for a specific movie'
+// #swagger.parameters['movieId'] = { in: 'path', required: true, description: 'Movie ID' }
 
-
-// Create review
-router.post('/', asyncHandler(controller.createReview));
-
-// Get all reviews
-router.get('/', asyncHandler(controller.getAllReviews));
-
-// Get reviews for a movie
-router.get('/movie/:movieId', asyncHandler(controller.getReviewsByMovie));
-
-// Get single review
-router.get('/:id', asyncHandler(controller.getReviewById));
-
-// Update review
-router.put('/:id', asyncHandler(controller.updateReview));
-
-// Delete review
-router.delete('/:id', asyncHandler(controller.deleteReview));
-
-
-router.post('/:movieId', notImplemented);
-router.get('/:movieId', notImplemented);
-router.delete('/:movieId', notImplemented);
+router.delete('/:movieId', asyncHandler(reviewController.deleteReviewsByMovie));
+// #swagger.tags = ['Reviews']
+// #swagger.description = 'Delete all reviews for a specific movie'
+// #swagger.parameters['movieId'] = { in: 'path', required: true, description: 'Movie ID' }
 
 module.exports = router;

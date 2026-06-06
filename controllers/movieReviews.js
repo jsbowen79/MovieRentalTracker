@@ -1,46 +1,58 @@
-const reviewsModel = require('../models/movieReviews');
+const reviewModel = require('../models/movieReviews.js');
+const UserDataError = require('../errors/UserDataError.js');
+const { ObjectId } = require('mongodb');
 
-// Create review
-async function createReview(req, res) {
-  const result = await reviewsModel.createReview(req.body);
-  res.status(201).json(result);
+async function addReview(req, res) {
+  const dateReviewed = new Date().toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  });
+
+  if (!req.params.movieId) {
+    throw new UserDataError('A movieId is required to add a review.');
+  }
+
+  if (!req.body.review) {
+    throw new UserDataError('A review is required.');
+  }
+
+  const movieId = new ObjectId(req.params.movieId);
+  const review = req.body.review;
+
+  const response = await reviewModel.insertReview(
+    movieId,
+    review,
+    dateReviewed
+  );
+
+  res.json(response);
 }
 
-// Get all reviews
-async function getAllReviews(req, res) {
-  const reviews = await reviewsModel.getAllReviews();
-  res.json(reviews);
+async function listReviewsByMovie(req, res) {
+  if (!req.params.movieId) {
+    throw new UserDataError('A movieId is required to get reviews.');
+  }
+
+  const movieId = new ObjectId(req.params.movieId);
+  const response = await reviewModel.getReviewsByMovie(movieId);
+
+  res.json(response);
 }
 
-// Get reviews by movie
-async function getReviewsByMovie(req, res) {
-  const reviews = await reviewsModel.getReviewsByMovie(req.params.movieId);
-  res.json(reviews);
-}
+async function deleteReviewsByMovie(req, res) {
+  if (!req.params.movieId) {
+    throw new UserDataError('A movieId is required to delete reviews.');
+  }
 
-// Get single review
-async function getReviewById(req, res) {
-  const review = await reviewsModel.getReviewById(req.params.id);
-  res.json(review);
-}
+  const movieId = new ObjectId(req.params.movieId);
+  const response = await reviewModel.deleteReviewsByMovie(movieId);
 
-// Update review
-async function updateReview(req, res) {
-  const result = await reviewsModel.updateReview(req.params.id, req.body);
-  res.json(result);
-}
-
-// Delete review
-async function deleteReview(req, res) {
-  const result = await reviewsModel.deleteReview(req.params.id);
-  res.json(result);
+  res.json(response);
 }
 
 module.exports = {
-  createReview,
-  getAllReviews,
-  getReviewsByMovie,
-  getReviewById,
-  updateReview,
-  deleteReview,
+  addReview,
+  listReviewsByMovie,
+  deleteReviewsByMovie,
 };
