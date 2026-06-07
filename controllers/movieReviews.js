@@ -3,27 +3,34 @@ const UserDataError = require('../errors/UserDataError.js');
 const { ObjectId } = require('mongodb');
 
 async function addReview(req, res) {
-  const dateReviewed = new Date().toLocaleDateString('en-US', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  });
-
   if (!req.params.movieId) {
     throw new UserDataError('A movieId is required to add a review.');
   }
 
-  if (!req.body.review) {
-    throw new UserDataError('A review is required.');
+  if (!req.body.reviewer) {
+    throw new UserDataError('A reviewer name is required.');
+  }
+
+  if (!req.body.rating) {
+    throw new UserDataError('A rating is required.');
+  }
+
+  if (!req.body.reviewText) {
+    throw new UserDataError('A reviewText is required.');
   }
 
   const movieId = new ObjectId(req.params.movieId);
-  const review = req.body.review;
+  const reviewer = req.body.reviewer;
+  const rating = Number(req.body.rating);
+  const reviewText = req.body.reviewText;
+  const createdAt = new Date();
 
   const response = await reviewModel.insertReview(
     movieId,
-    review,
-    dateReviewed
+    reviewer,
+    rating,
+    reviewText,
+    createdAt
   );
 
   res.json(response);

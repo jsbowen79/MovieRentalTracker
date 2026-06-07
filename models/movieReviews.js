@@ -3,7 +3,7 @@ const MongoDBConnectionError = require('../errors/MongoDBConnectionError.js');
 const NotFoundError = require('../errors/NotFoundError.js');
 const AppError = require('../errors/AppError.js');
 
-async function insertReview(movieId, review, dateReviewed) {
+async function insertReview(movieId, reviewer, rating, reviewText, createdAt) {
   const db = await getDB();
   let movieName;
 
@@ -32,8 +32,10 @@ async function insertReview(movieId, review, dateReviewed) {
   try {
     const entry = {
       movieId,
-      review,
-      dateReviewed,
+      reviewer,
+      rating,
+      reviewText,
+      createdAt,
     };
 
     const data = await db.collection('movieReviews').insertOne(entry);
