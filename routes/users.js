@@ -1,16 +1,20 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
+const {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require('../controllers/users');
 
-router.post('/', notImplemented);
-router.put('/:userId', notImplemented);
-router.get('/', notImplemented);
-router.get('/:userId', notImplemented);
-router.delete('/:userId', notImplemented);
+router.post('/', createUser);
+router.put('/:userId', updateUser);
+router.get('/', getAllUsers);
+router.get('/:userId', getUserById);
+router.delete('/:userId', deleteUser);
+
+// I will use this when authentication is merged and ready to use:
+// router.delete('/:userId', auth, authorize('admin'), deleteUser);
 
 module.exports = router;

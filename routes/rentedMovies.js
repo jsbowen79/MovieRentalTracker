@@ -1,17 +1,30 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler.js');
+const AsyncHandler = require('../errors/AsyncHandler.js');
+const rentController = require('../controllers/rentedMovies.js');
+const requireAuth = require('../middleware/requireAuth.js');
+const authorizeUser = require('../middleware/authorizeUser.js');
 
-const notImplemented = (req, res) => {
-  res.status(501).json({
-    message: 'Endpoint not implemented',
-  });
-};
-
-router.post('/:userId', notImplemented);
-router.put('/:userId', notImplemented);
-router.get('/', notImplemented);
-router.get('/:userId', notImplemented);
-router.get('/out/:userId', notImplemented);
-router.delete('/:transId', notImplemented);
+router.post('/:userId', requireAuth, AsyncHandler(rentController.rentMovie));
+router.put(
+  '/:transId',
+  requireAuth,
+  AsyncHandler(rentController.updateTransaction)
+);
+router.get('/', requireAuth, AsyncHandler(rentController.listRentedMovies));
+router.get(
+  '/:userId',
+  authorizeUser('admin'),
+  AsyncHandler(rentController.listRentedByUser)
+);
+router.get(
+  '/out/:userId',
+  authorizeUser('admin'),
+  AsyncHandler(rentController.listRentedByUser)
+);
+router.delete(
+  '/:transId',
+  requireAuth,
+  AsyncHandler(rentController.deleteTransaction)
+);
 
 module.exports = router;
