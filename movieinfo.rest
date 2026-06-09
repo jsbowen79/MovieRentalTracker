@@ -11,16 +11,16 @@ Content-Type: application/json
 {
   "title": "Inception",
   "director": "Christopher Nolan",
-  "releaseYear": 2010,
+  "releaseYear": "2012",
   "genre": "Science Fiction",
   "main_actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
-  "length_minutes": 148,
+  "length_minutes": "148",
   "studio": "Warner Bros.",
   "language": "French"
 }
 
 ### Update an existing movie's information based on its id
-PUT http://localhost:5000/info/6a21675d16e7b4b975452b19
+PUT http://localhost:5000/info/6a287d87f71d134e9cff40db
 Content-Type: application/json
 
 {
@@ -35,4 +35,4 @@ Content-Type: application/json
 }
 
 ### Delete a movie from the database based on its id
-DELETE http://localhost:5000/info/6a21675d16e7b4b975452b19
+DELETE http://localhost:5000/info/6a287d87f71d134e9cff40db
