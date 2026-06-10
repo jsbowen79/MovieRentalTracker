@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import globals from 'globals';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
@@ -10,10 +11,19 @@ export default [
   js.configs.recommended,
 
   {
+    files: ['**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
+
+  {
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'module',
+      sourceType: 'commonjs',
       globals: {
         console: 'readonly',
         module: 'readonly',
@@ -26,12 +36,8 @@ export default [
     },
     rules: {
       ...prettierConfig.rules,
-
-      // Your custom rules
       'no-unused-vars': 'warn',
       'no-console': 'off',
-
-      // Run prettier as an ESLint rule
       'prettier/prettier': 'error',
     },
   },
