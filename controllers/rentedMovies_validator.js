@@ -65,7 +65,7 @@ const validateNew = (req, res, next) => {
 
 const updateTransactionRules = () => {
     return [
-        params("transId")
+        param("transId")
         .notEmpty()
         .withMessage("A transaction id is required to update a transaction.")
         .trim()
