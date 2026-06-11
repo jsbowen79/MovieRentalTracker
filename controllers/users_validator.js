@@ -80,7 +80,8 @@ const updateUserRules = () => {
 
     body('email')
       .optional()
-      .withMessage('Please Provide an email.')
+      .isEmail()
+      .withMessage('Please Provide an Email in this field.')
       .normalizeEmail()
       .escape()
       .trim()
