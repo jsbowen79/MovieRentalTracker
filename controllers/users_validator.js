@@ -31,7 +31,7 @@ const validUserRules = () => {
       .matches(/^([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
       .withMessage('Phone number must be in ###-###-#### format.')
       .bail(),
-      .bail(),
+  
 
     body('role')
       .notEmpty()
