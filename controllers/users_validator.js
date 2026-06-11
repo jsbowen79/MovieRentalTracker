@@ -20,7 +20,7 @@ const validUserRules = () => {
       .trim()
       .bail(),
 
-    body('githubId').optional().isNumeric().trim().bail(),
+    body('githubId').optional().trim().bail(),
 
     body('profileUrl').optional().isURL().trim().escape().bail(),
 
@@ -82,7 +82,7 @@ const updateUserRules = () => {
       .trim()
       .bail(),
 
-    body('githubId').optional().isNumeric().trim().bail(),
+    body('githubId').optional().trim().bail(),
 
     body('profileUrl').optional().isURL().trim().escape().bail(),
 
