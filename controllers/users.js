@@ -1,5 +1,9 @@
 const { ObjectId } = require('mongodb');
 const { getUsersCollection } = require('../models/users');
+const NotFoundError = require('../errors/NotFoundError');
+const UserDataError = require('../errors/UserDataError');
+const MongoDBConnectionError = require('../errors/MongoDBConnectionError');
+const AppError = require('../errors/AppError');
 
 // Get all of the customers' information
 
@@ -9,9 +13,18 @@ const getAllUsers = async (req, res) => {
   try {
     const usersCollection = await getUsersCollection();
     const users = await usersCollection.find().toArray();
+    if (users.length == 0) {
+      throw new NotFoundError('There are no users in the Database.');
+    }
     res.status(200).json(users);
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    } else {
+      throw new MongoDBConnectionError(
+        `There was a problem with the database.  Please try again. ${error}`
+      );
+    }
   }
 };
 
@@ -24,7 +37,7 @@ const getUserById = async (req, res) => {
     const usersCollection = await getUsersCollection();
 
     if (!ObjectId.isValid(req.params.userId)) {
-      return res.status(400).json({ message: 'userId is not valid' });
+      return new UserDataError('userId is not valid');
     }
 
     const user = await usersCollection.findOne({
@@ -32,12 +45,12 @@ const getUserById = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ message: 'User could not be found' });
+      return NotFoundError('User could not be found');
     }
 
     res.status(200).json(user);
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  } catch {
+    return MongoDBConnectionError('There was a problem with the database.');
   }
 };
 
@@ -48,10 +61,6 @@ const createUser = async (req, res) => {
 
   try {
     const usersCollection = await getUsersCollection();
-
-    if (!req.body.username || !req.body.email) {
-      return res.status(400).json({ message: 'Missing the required fields' });
-    }
 
     const user = {
       githubId: req.body.githubId,
@@ -75,8 +84,8 @@ const createUser = async (req, res) => {
       email: user.email,
       role: user.role,
     });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  } catch {
+    return new MongoDBConnectionError('There was a Problem with the database.');
   }
 };
 
@@ -88,9 +97,6 @@ const updateUser = async (req, res) => {
   try {
     const usersCollection = await getUsersCollection();
 
-    if (!ObjectId.isValid(req.params.userId)) {
-      return res.status(400).json({ message: 'userId is not valid' });
-    }
     const updates = { ...req.body };
     const userId = new ObjectId(req.params.userId);
 
@@ -100,7 +106,7 @@ const updateUser = async (req, res) => {
     );
 
     if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'User could not be found' });
+      return new NotFoundError('User could not be found');
     }
 
     const updatedUser = await usersCollection.findOne({ _id: userId });
@@ -109,8 +115,8 @@ const updateUser = async (req, res) => {
       message: 'User has been updated successfully',
       user: updatedUser,
     });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  } catch {
+    return new MongoDBConnectionError('There was a problem with the database.');
   }
 };
 
@@ -123,7 +129,7 @@ const deleteUser = async (req, res) => {
     const usersCollection = await getUsersCollection();
 
     if (!ObjectId.isValid(req.params.userId)) {
-      return res.status(400).json({ message: 'userId is not valid' });
+      return new UserDataError('userId is not valid');
     }
 
     const userId = new ObjectId(req.params.userId);
@@ -131,14 +137,14 @@ const deleteUser = async (req, res) => {
     const result = await usersCollection.deleteOne({ _id: userId });
 
     if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'User could not be found' });
+      return new NotFoundError('User could not be found');
     }
 
     return res
       .status(200)
       .json({ message: 'User has been deleted successfully' });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  } catch {
+    return new MongoDBConnectionError('There was a problem with the Database');
   }
 };
 

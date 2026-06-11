@@ -1,5 +1,13 @@
 const router = require('express').Router();
-
+const {
+  validateNew,
+  validateUpdate,
+  validUserRules,
+  updateUserRules,
+} = require('../controllers/users_validator');
+const asyncHandler = require('../errors/AsyncHandler');
+const requireAuth = require('../middleware/requireAuth.js');
+const authorizeUser = require('../middleware/authorizeUser.js');
 const {
   getAllUsers,
   getUserById,
@@ -8,11 +16,23 @@ const {
   deleteUser,
 } = require('../controllers/users');
 
-router.post('/', createUser);
-router.put('/:userId', updateUser);
-router.get('/', getAllUsers);
-router.get('/:userId', getUserById);
-router.delete('/:userId', deleteUser);
+router.post(
+  '/',
+  authorizeUser,
+  validUserRules(),
+  validateNew,
+  asyncHandler(createUser)
+);
+router.put(
+  '/:userId',
+  authorizeUser,
+  updateUserRules(),
+  validateUpdate,
+  asyncHandler(updateUser)
+);
+router.get('/', authorizeUser, asyncHandler(getAllUsers));
+router.get('/:userId', requireAuth, asyncHandler(getUserById));
+router.delete('/:userId', authorizeUser, asyncHandler(deleteUser));
 
 // I will use this when authentication is merged and ready to use:
 // router.delete('/:userId', auth, authorize('admin'), deleteUser);
