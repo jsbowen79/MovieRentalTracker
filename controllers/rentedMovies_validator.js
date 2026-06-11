@@ -59,9 +59,9 @@ const validateNew = (req, res, next) => {
     }; 
     const extractedErrors = []; 
     errors.array().map(err => extractedErrors.push({ [err.path]: err.msg })); 
-    return new UserDataError(
+    return next(new UserDataError(
         {errors: extractedErrors})
-}
+)}
 
 const updateTransactionRules = () => {
     return [
@@ -138,9 +138,8 @@ const validateUpdate = (req, res, next) => {
   }
   const extractedErrors = [];
   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
-  return res.status(422).json({
-    errors: extractedErrors,
-  });
-};
+  return next(new UserDataError(
+        {errors: extractedErrors})
+)};
 
 module.exports = { validateNew, validateUpdate, validRentalRules, updateTransactionRules }
