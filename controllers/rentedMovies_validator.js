@@ -80,13 +80,13 @@ const updateTransactionRules = () => {
     body('out')
       .optional()
       .custom((value) => {
-        if (value == 'true' || value == 'false') {
+        if (value == true || value == false) {
           return true;
         } else {
           return false;
         }
       })
-      .withMessage('Out must be "true" or "false".')
+      .withMessage('Out must be Boolean (true) or (false).')
       .trim()
       .escape()
       .bail(),
