@@ -3,14 +3,20 @@ const AsyncHandler = require('../errors/AsyncHandler.js');
 const rentController = require('../controllers/rentedMovies.js');
 const requireAuth = require('../middleware/requireAuth.js');
 const authorizeUser = require('../middleware/authorizeUser.js');
-const {validateNew, validateUpdate, validRentalRules, updateTransactionRules} =require('../controllers/rentedMovies_validator.js');
-
-
-router.post('/:userId', 
-  requireAuth,
-  validRentalRules(), 
+const {
   validateNew,
-  AsyncHandler(rentController.rentMovie));
+  validateUpdate,
+  validRentalRules,
+  updateTransactionRules,
+} = require('../controllers/rentedMovies_validator.js');
+
+router.post(
+  '/:userId',
+  requireAuth,
+  validRentalRules(),
+  validateNew,
+  AsyncHandler(rentController.rentMovie)
+);
 
 router.put(
   '/:transId',

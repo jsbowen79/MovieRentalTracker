@@ -27,7 +27,6 @@ async function rentMovie(req, res) {
 }
 
 async function updateTransaction(req, res) {
- 
   const updates = { ...req.body };
   if (updates.userId != undefined) {
     updates.userId = new ObjectId(updates.userId);
