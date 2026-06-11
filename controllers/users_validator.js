@@ -15,6 +15,7 @@ const validUserRules = () => {
     body('email')
       .notEmpty()
       .withMessage('Please Provide an email.')
+      .isEmail()
       .normalizeEmail()
       .escape()
       .trim()
