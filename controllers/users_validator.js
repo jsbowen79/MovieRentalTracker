@@ -28,16 +28,11 @@ const validUserRules = () => {
 
     body('phone')
       .optional()
-      .custom((value) => {
-        const phoneRegex = '^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/';
-        if (!phoneRegex.test(value)) {
-          throw new UserDataError(
-            'Phone number must be in ###-###-#### format.'
-          );
-        }
-        return true;
-      })
+      .matches(/^([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
+      .withMessage('Phone number must be in ###-###-#### format.')
       .bail(),
+      .bail(),
+
     body('role')
       .notEmpty()
       .custom((value) => {
@@ -95,16 +90,11 @@ const updateUserRules = () => {
 
     body('phone')
       .optional()
-      .custom((value) => {
-        const phoneRegex = '^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/';
-        if (!phoneRegex.test(value)) {
-          throw new UserDataError(
-            'Phone number must be in ###-###-#### format.'
-          );
-        }
-        return true;
-      })
+      .matches(/^([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
+      .withMessage('Phone number must be in ###-###-#### format.')
       .bail(),
+
+
     body('role')
       .optional()
       .custom((value) => {
