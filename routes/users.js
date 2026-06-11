@@ -18,21 +18,21 @@ const {
 
 router.post(
   '/',
-  authorizeUser,
+  authorizeUser('admin'),
   validUserRules(),
   validateNew,
   asyncHandler(createUser)
 );
 router.put(
   '/:userId',
-  authorizeUser,
+  authorizeUser9('admin'),
   updateUserRules(),
   validateUpdate,
   asyncHandler(updateUser)
 );
-router.get('/', authorizeUser, asyncHandler(getAllUsers));
+router.get('/', authorizeUser('admin'), asyncHandler(getAllUsers));
 router.get('/:userId', requireAuth, asyncHandler(getUserById));
-router.delete('/:userId', authorizeUser, asyncHandler(deleteUser));
+router.delete('/:userId', authorizeUser('admin'), asyncHandler(deleteUser));
 
 // I will use this when authentication is merged and ready to use:
 // router.delete('/:userId', auth, authorize('admin'), deleteUser);
