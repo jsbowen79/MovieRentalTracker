@@ -25,7 +25,7 @@ router.post(
 );
 router.put(
   '/:userId',
-  authorizeUser9('admin'),
+  authorizeUser('admin'),
   updateUserRules(),
   validateUpdate,
   asyncHandler(updateUser)
