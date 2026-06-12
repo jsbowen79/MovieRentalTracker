@@ -45,7 +45,9 @@ async function insertRentedMovie(
         movieName = movieRecord.title;
       }
     } else {
-      new NotFoundError('The requested movie does not exist in the database.');
+      throw new NotFoundError(
+        'The requested movie does not exist in the database.'
+      );
     }
   } catch (error) {
     throw new MongoDBConnectionError(
@@ -99,15 +101,18 @@ async function getAllRentals() {
       throw new NotFoundError('There are no entries in the Database.');
     }
   } catch (error) {
-    throw new MongoDBConnectionError(
-      `There was a problem with the database.  Please try again. ${error}`
-    );
+    if (error instanceof AppError) {
+      throw error;
+    } else {
+      throw new MongoDBConnectionError(
+        `There was a problem with the database.  Please try again. ${error}`
+      );
+    }
   }
 }
 
 async function listRentedMovies(userId, all) {
   const db = await getDB();
-  console.log('all: ', all, 'userid: ', userId);
   if (all) {
     try {
       const result = await db
