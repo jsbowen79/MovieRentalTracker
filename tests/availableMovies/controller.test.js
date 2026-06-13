@@ -10,10 +10,7 @@ const {
 
 describe('getAllMovies', () => {
   test('returns all movies', async () => {
-    const movies = [
-      { title: 'Inception' },
-      { title: 'Interstellar' },
-    ];
+    const movies = [{ title: 'Inception' }, { title: 'Interstellar' }];
 
     const mockToArray = jest.fn().mockResolvedValue(movies);
 

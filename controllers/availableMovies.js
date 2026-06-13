@@ -1,113 +1,148 @@
 const { getDB } = require('../models/mongoDb');
 const { ObjectId } = require('mongodb');
+const movieInfo = require('../models/movieInformation');
+const UserDataError = require('../errors/UserDataError');
+const NotFoundError = require('../errors/NotFoundError');
+const MongoDBConnectionError = require('../errors/MongoDBConnectionError');
 
 // GET ALL MOVIES
-const getAllMovies = async (req, res) => {
+const getAllAvailableMovies = async (req, res) => {
   const db = await getDB();
-  const movies = await db.collection('availableMovies').find().toArray();
+  try {
+    const movies = await db.collection('availableMovies').find().toArray();
+  } catch {
+    throw new MongoDBConnectionError('There was a problem with the database.');
+  }
 
   res.status(200).json({
     count: movies.length,
-    data: movies
+    data: movies,
   });
 };
 
 // CREATE MOVIE
-const createMovie = async (req, res) => {
+const addAvailableMovie = async (req, res) => {
   const db = await getDB();
-
-  const newMovie = {
-    title: req.body.title,
-    movieId: req.body.movieId,
-    genre: req.body.genre,
-    year: req.body.year,
-    language: req.body.language,
-    studio: req.body.studio,
-    durationMinutes: req.body.durationMinutes,
-    rating: req.body.rating,
-    availableCopies: req.body.availableCopies,
-    createdAt: new Date()
-  };
-
-  const result = await db.collection('availableMovies').insertOne(newMovie);
-
-  res.status(201).json({
-    message: "Movie created successfully",
-    id: result.insertedId
-  });
+  try {
+    const movie = movieInfo.getMovieById(req.body.movieId);
+  } catch {
+    throw new MongoDBConnectionError('There was a problem with the database.');
+  }
+  if (movie) {
+    const genre = movie.genre;
+    const newEntry = {
+      movieId: movie._id,
+      availableCopies: req.body.availableCopies,
+      genre: genre,
+    };
+    try {
+      const result = await db.collection('availableMovies').insertOne(newEntry);
+    } catch {
+      throw new MongoDBConnectionError(
+        'There was a problem with the database. '
+      );
+    }
+    res.status(201).json({
+      message: 'Movie Entered into inventory successfully',
+      id: result.insertedId,
+    });
+  } else {
+    throw new UserDataError('There is no movie with that Id in the database.');
+  }
 };
 
 // GET BY GENRE
-const getByGenre = async (req, res) => {
+const getAvailableMoviesByGenre = async (req, res) => {
   const db = await getDB();
 
   const genre = req.params.genreId;
+  try {
+    const movies = await db
+      .collection('availableMovies')
+      .find({ genre: genre })
+      .toArray();
+  } catch {
+    throw new MongoDBConnectionError('There was a problem with the Daatabase.');
+  }
 
-  const movies = await db.collection('availableMovies')
-    .find({ genre: genre })
-    .toArray();
-
-  res.status(200).json({
-    count: movies.length,
-    data: movies
-  });
+  if (movies.length > 0) {
+    res.status(200).json({
+      count: movies.length,
+      data: movies,
+    });
+  } else {
+    throw new NotFoundError('No movies were found in that genre.');
+  }
 };
 
-// UPDATE MOVIE 
-const updateMovie = async (req, res) => {
+// UPDATE MOVIE
+const updateAvailableMovie = async (req, res) => {
   const db = await getDB();
 
-  const id = req.params.id;
+  const movieId = req.params.id;
+  try {
+    const movie = movieInfo.getMovieById(req.params.id);
+  } catch {
+    throw new MongoDBConnectionError('There was a problem with the Database. ');
+  }
+  if (movie == null) {
+    throw new NotFoundError('There are no movies with that Id');
+  } else {
+    const genre = movie.genre;
 
-  const updatedMovie = {
-    title: req.body.title,
-    movieId: req.body.movieId,
-    genre: req.body.genre,
-    year: req.body.year,
-    language: req.body.language,
-    studio: req.body.studio,
-    durationMinutes: req.body.durationMinutes,
-    rating: req.body.rating,
-    availableCopies: req.body.availableCopies
+    const updatedMovie = {
+      movieId: movie.movieId,
+      genre: genre,
+      availableCopies: req.params.availableCopies,
+    };
+    try {
+      const result = await db
+        .collection('availableMovies')
+        .updateOne({ movieId: movie.movieId }, { $set: updatedMovie });
+    } catch {
+      throw new MongoDBConnectionError(
+        'There was a problem with the database.'
+      );
+    }
+
+    if (result.matchedCount === 0) {
+      throw new NotFoundError('Movie not found');
+    }
+
+    res.status(200).json({
+      message: 'Movie updated successfully',
+    });
+  }
+
+  // DELETE MOVIE
+  const deleteAvailableMovie = async (req, res) => {
+    const db = await getDB();
+    const id = req.params.id;
+    try {
+      const result = await db
+        .collection('availableMovies')
+        .deleteOne({ movieId: new ObjectId(id) });
+    } catch {
+      throw new MongoDBConnectionError(
+        'There was a problem with the database.'
+      );
+    }
+
+    if (result.deletedCount === 0) {
+      throw new NotFoundError('The movie does not exist');
+    }
+
+    res.status(200).json({
+      message: 'Movie deleted successfully',
+    });
   };
-
-  const result = await db.collection('availableMovies').updateOne(
-    { _id: new ObjectId(id) },
-    { $set: updatedMovie }
-  );
-
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "Movie not found" });
-  }
-
-  res.status(200).json({
-    message: "Movie updated successfully"
-  });
-};
-
-// DELETE MOVIE
-const deleteMovie = async (req, res) => {
-  const db = await getDB();
-
-  const id = req.params.id;
-
-  const result = await db.collection('availableMovies')
-    .deleteOne({ _id: new ObjectId(id) });
-
-  if (result.deletedCount === 0) {
-    return res.status(404).json({ message: "Movie not found" });
-  }
-
-  res.status(200).json({
-    message: "Movie deleted successfully"
-  });
 };
 
 // EXPORTS
 module.exports = {
-  getAllMovies,
-  createMovie,
-  getByGenre,
-  updateMovie,
-  deleteMovie
+  getAllAvailableMovies,
+  addAvailableMovie,
+  getAvailableMoviesByGenre,
+  updateAvailableMovie,
+  deleteAvailableMovie,
 };

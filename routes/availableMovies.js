@@ -15,16 +15,13 @@ router.post(
 );
 
 // GET ALL MOVIES (public)
-router.get(
-  '/',
-  asyncHandler(availableMoviesController.getAllMovies)
-);
+router.get('/', asyncHandler(availableMoviesController.getAllAvailableMovies));
 
 // GET BY GENRE (logged in users)
 router.get(
   '/:genreId',
   requireAuth,
-  asyncHandler(availableMoviesController.getByGenre)
+  asyncHandler(availableMoviesController.getAvailableMoviesByGenre)
 );
 
 // UPDATE MOVIE (admin only)
@@ -32,14 +29,14 @@ router.put(
   '/:id',
   authorizeUser('admin'),
   validateMovie,
-  asyncHandler(availableMoviesController.updateMovie)
+  asyncHandler(availableMoviesController.updateAvailableMovie)
 );
 
 // DELETE MOVIE (admin only)
 router.delete(
   '/:id',
   authorizeUser('admin'),
-  asyncHandler(availableMoviesController.deleteMovie)
+  asyncHandler(availableMoviesController.deleteAvailableMovie)
 );
 
 module.exports = router;
