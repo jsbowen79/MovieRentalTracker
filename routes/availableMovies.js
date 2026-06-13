@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const asyncHandler = require('../errors/AsyncHandler');
 const {availableMovieRules, validateAvailableMovie } = require('../middleware/availableMoviesValidator.js');
-const availableMoviesController = require('../controllers/availableMoviesController');
+const availableMoviesController = require('../controllers/availableMovies.js');
 const validateMovie = require('../middleware/availableMoviesValidator');
 const requireAuth = require('../middleware/requireAuth');
 const authorizeUser = require('../middleware/authorizeUser');
