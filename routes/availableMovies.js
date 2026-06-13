@@ -29,8 +29,9 @@ router.get(
 router.put(
   '/:id',
   authorizeUser('admin'),
-  validateMovie,  availableMovieRules(),
-  validateAvailableMovie,availableMoviesController.updateAvailableMovie)
+  availableMovieRules(),
+  validateAvailableMovie,
+  asyncHandler(availableMoviesController.updateAvailableMovie)
 );
 
 // DELETE MOVIE (admin only)
@@ -38,10 +39,6 @@ router.delete(
   '/:id',
   authorizeUser('admin'),
   asyncHandler(availableMoviesController.deleteAvailableMovie)
-);
-
-module.exports = router;
-ilableMovie)
 );
 
 module.exports = router;
