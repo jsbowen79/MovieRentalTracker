@@ -6,7 +6,7 @@ const validateMovie = require('../middleware/availableMoviesValidator');
 const requireAuth = require('../middleware/requireAuth');
 const authorizeUser = require('../middleware/authorizeUser');
 
-// CREATE MOVIE (protected)
+// CREATE MOVIE (admin only)
 router.post(
   '/',
   requireAuth,
@@ -15,21 +15,20 @@ router.post(
   asyncHandler(availableMoviesController.createMovie)
 );
 
-// GET ALL MOVIES (public or logged-in depending on your rule)
+// GET ALL MOVIES (public)
 router.get(
   '/',
-  requireAuth,
   asyncHandler(availableMoviesController.getAllMovies)
 );
 
-// GET BY GENRE
+// GET BY GENRE (logged-in users)
 router.get(
   '/:genreId',
   requireAuth,
   asyncHandler(availableMoviesController.getByGenre)
 );
 
-// UPDATE MOVIE (protected)
+// UPDATE MOVIE (admin only)
 router.put(
   '/:id',
   requireAuth,
@@ -38,7 +37,7 @@ router.put(
   asyncHandler(availableMoviesController.updateMovie)
 );
 
-// DELETE MOVIE (protected)
+// DELETE MOVIE (admin only)
 router.delete(
   '/:id',
   requireAuth,

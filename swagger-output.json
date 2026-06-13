@@ -318,6 +318,7 @@
 },
     "/rented/{userId}": {
       "post": {
+        "tags": ["Rented Movies"],
         "description": "",
         "parameters": [
           {
@@ -334,6 +335,7 @@
         }
       },
       "get": {
+        "tags": ["Rented Movies"],
         "description": "",
         "parameters": [
           {
@@ -352,6 +354,7 @@
     },
     "/rented/{transId}": {
       "put": {
+        "tags": ["Rented Movies"],
         "description": "",
         "parameters": [
           {
@@ -368,6 +371,7 @@
         }
       },
       "delete": {
+        "tags": ["Rented Movies"],
         "description": "",
         "parameters": [
           {
@@ -386,6 +390,7 @@
     },
     "/rented/": {
       "get": {
+        "tags": ["Rented Movies"],
         "description": "",
         "responses": {
           "default": {
@@ -396,6 +401,7 @@
     },
     "/rented/out/{userId}": {
       "get": {
+        "tags": ["Rented Movies"],
         "description": "",
         "parameters": [
           {
