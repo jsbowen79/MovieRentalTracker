@@ -5,9 +5,9 @@
     "description": "Allows for CRUD operations involved in tracking Operating a Movie Rental Business",
     "version": "1.0.0"
   },
-  "host": "",
+
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": ["https", "http"],
   "paths": {
     "/": {
       "get": {
@@ -22,7 +22,7 @@
     "/user/": {
       "post": {
         "tags": ["Users"],
-        "description": "",
+        "description": "Add a user to the Database",
         "parameters": [
           {
             "name": "body",
@@ -30,13 +30,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
                 "githubId": {
+                  "example": "any"
+                },
+                "username": {
                   "example": "any"
                 },
                 "profileUrl": {
@@ -48,8 +45,11 @@
                 "phone": {
                   "example": "any"
                 },
-                "role": {
+                "email": {
                   "example": "any"
+                },
+                "role": {
+                  "example": "user"
                 }
               }
             }
@@ -69,7 +69,7 @@
       },
       "get": {
         "tags": ["Users"],
-        "description": "",
+        "description": "Retrieve a list of users from the database",
         "responses": {
           "200": {
             "description": "OK"
@@ -83,13 +83,43 @@
     "/user/{userId}": {
       "put": {
         "tags": ["Users"],
-        "description": "",
+        "description": "Update a user in the Database by userId",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "githubId": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                },
+                "profileUrl": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "user"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -162,74 +192,45 @@
     },
     "/auth/github": {
       "get": {
-        "description": "",
+        "description": "Log in to the Server",
         "responses": {
-          "default": {
-            "description": ""
+          "501": {
+            "description": "Login Failed"
           }
         }
       }
     },
-    "/auth/github/callback": {
+    "/auth/github/redirect": {
       "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "description": "Redirect route after login"
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "Log out of the Server"
       }
     },
     "/movies/": {
       "post": {
-        "tags": ["Available Movies"],
-        "description": "Create a new available movie",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "availableCopies": { "type": "number" },
-                "movieId": { "type": "string" }
-              }
-            }
-          }
-        ],
+        "description": "",
         "responses": {
-          "201": {
-            "description": "Movie created successfully"
-          },
-
-          "400": {
-            "description": "UserDataError: There is no movie with that Id."
-          },
-          "500": {
-            "description": "MongoDBConnectionError: There was a problem with the database."
+          "501": {
+            "description": "Not Implemented"
           }
         }
       },
-
       "get": {
-        "tags": ["Available Movies"],
-        "description": "Get all available movies",
+        "description": "",
         "responses": {
-          "200": {
-            "description": "Success - returns all movies"
-          },
-          "500": {
-            "description": "MongoDBConnectionError: There was a problem with the Database."
+          "501": {
+            "description": "Not Implemented"
           }
         }
       }
     },
-
     "/movies/{genreId}": {
       "get": {
-        "tags": ["Available Movies"],
-        "description": "Get movies filtered by genre",
+        "description": "",
         "parameters": [
           {
             "name": "genreId",
@@ -239,26 +240,37 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success - returns filtered movies"
-          },
-          "404": {
-            "description": "NotFoundError: No movies were found in that genre."
-          },
-          "500": {
-            "description": "MongoDBConnectionError: There was a problem with the Database."
+          "501": {
+            "description": "Not Implemented"
           }
         }
       }
     },
-
-    "/movies/{movieId}": {
-      "put": {
-        "tags": ["Available Movies"],
-        "description": "Update a movie by ID",
+    "/movies/{userId}": {
+      "delete": {
+        "description": "",
         "parameters": [
           {
-            "name": "movieId",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "Not Implemented"
+          }
+        }
+      }
+    },
+    "/rented/{userId}": {
+      "post": {
+        "tags": ["Rented Movies"],
+        "description": "Add a movie rental to a user's record",
+        "parameters": [
+          {
+            "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -270,69 +282,96 @@
             "schema": {
               "type": "object",
               "properties": {
-                "availableCopies": { "type": "number" }
-              }
+                "movieId": {
+                  "type": "string"
+                }
+              },
+              "required": ["movieId"]
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Movie updated successfully"
+          "400": {
+            "description": "UserDataError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Please provide the movieId and the userId, The requested movie is not available"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "NotFoundError: There are no movies with that Id."
+            "description": "NotFoundError--No user matching that userId exists.  Please try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "No user matching that userId Exists. The requested movie is not available. The requested movie does not exist in the database."
+                    }
+                  }
+                }
+              }
+            }
           },
+
           "500": {
-            "description": "MongoDBConnectionError: There was a problem with the Database."
+            "description": "MongoDBConnectionError--There was a problem with the database. Please try again."
           }
         }
       },
 
-      "delete": {
-        "tags": ["Available Movies"],
-        "description": "Delete a movie by ID",
+      "get": {
+        "tags": ["Rented Movies"],
+        "description": "List all of the movies that an individual user has rented",
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Movie deleted successfully"
+          "400": {
+            "description": "UserDataError--You must provide a userId."
           },
           "404": {
-            "description": "NotFoundError: The movie does not exist."
+            "description": "NotFoundError--This user has rented no movies."
           },
           "500": {
-            "description": "MongoDBConnectionError: There was a problem with the Database."
+            "description": "MongoDBConnectionError--There was a problem connecting with the Database."
           }
         }
       }
     },
-    "/rented/{userId}": {
-      "post": {
-        "tags": ["Rented Movies"],
-        "description": "",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
+    "/rented/": {
       "get": {
         "tags": ["Rented Movies"],
-        "description": "",
+        "description": "Get a list of all movies in the Rented Movies database.",
+        "responses": {
+          "404": {
+            "description": "NotFoundError--There are no entries in the database. "
+          },
+          "500": {
+            "description": "MongoDBConnectionError--There was a problem with the database.  Please try again."
+          }
+        }
+      }
+    },
+    "/rented/out/{userId}": {
+      "get": {
+        "tags": ["Rented Movies"],
+        "description": "Get a list of movies currently listed as in the user's possession",
         "parameters": [
           {
             "name": "userId",
@@ -342,16 +381,19 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "400": {
+            "description": "UserDataError--You must provide a userId"
+          },
+          "500": {
+            "description": "MongoDBConnectionError--There was a problem with the database. Please try again."
           }
         }
       }
     },
     "/rented/{transId}": {
-      "put": {
+      "delete": {
         "tags": ["Rented Movies"],
-        "description": "",
+        "description": "Delete a transaction from the database.  Admin authorization required",
         "parameters": [
           {
             "name": "transId",
@@ -361,25 +403,72 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "400": {
+            "description": "UserDataError--You must include a transaction Id to delete a transaction"
+          },
+          "401": {
+            "description": "UnauthorizedError--You must be logged in as an administrator to delete a transaction."
+          },
+          "500": {
+            "description": "MongoDBConnectionError--There was a problem with the Database.  Please try again."
+          },
+          "404": {
+            "description": "No transaction with that transaction Id exists."
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": ["Rented Movies"],
-        "description": "",
+        "description": "Update a rental transaction in the database",
         "parameters": [
           {
             "name": "transId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movieId": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "string"
+                },
+                "out": {
+                  "type": "boolean"
+                },
+                "dateReturned": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "400": {
+            "description": "UserDataError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "There is no transaction with that Id. A transaction Id is required to update a transaction."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "MongoDBConnectionError--There was a problem with the database. Update failed."
           }
         }
       }
@@ -454,13 +543,13 @@
         }
       }
     },
-    "/info/": {
+    "/info/{movieId}": {
       "get": {
         "tags": ["Movie Information"],
         "description": "Get a single movie and its information based on the its id",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -486,10 +575,46 @@
         "description": "Update an existing movie's information based on its id",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "director": {
+                  "type": "string"
+                },
+                "releaseYear": {
+                  "type": "integer"
+                },
+                "genre": {
+                  "type": "string"
+                },
+                "main_actors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "length_minutes": {
+                  "type": "integer"
+                },
+                "studio": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -512,7 +637,7 @@
         "description": "Delete a movie from the database based on its id",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
