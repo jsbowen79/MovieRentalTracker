@@ -9,7 +9,6 @@ const authorizeUser = require('../middleware/authorizeUser');
 // CREATE MOVIE (admin only)
 router.post(
   '/',
-  requireAuth,
   authorizeUser('admin'),
   validateMovie,
   asyncHandler(availableMoviesController.createMovie)
@@ -31,7 +30,6 @@ router.get(
 // UPDATE MOVIE (admin only)
 router.put(
   '/:id',
-  requireAuth,
   authorizeUser('admin'),
   validateMovie,
   asyncHandler(availableMoviesController.updateMovie)
@@ -40,7 +38,6 @@ router.put(
 // DELETE MOVIE (admin only)
 router.delete(
   '/:id',
-  requireAuth,
   authorizeUser('admin'),
   asyncHandler(availableMoviesController.deleteMovie)
 );
