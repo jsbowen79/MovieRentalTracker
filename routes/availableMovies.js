@@ -30,7 +30,7 @@ router.get(
 
 // UPDATE MOVIE (admin only)
 router.put(
-  '/:id',
+  '/:movieId',
   authorizeUser('admin'),
   updateAvailableMovieRules(),
   validateAvailableMovie,
@@ -39,7 +39,7 @@ router.put(
 
 // DELETE MOVIE (admin only)
 router.delete(
-  '/:id',
+  '/:movieId',
   authorizeUser('admin'),
   asyncHandler(availableMoviesController.deleteAvailableMovie)
 );

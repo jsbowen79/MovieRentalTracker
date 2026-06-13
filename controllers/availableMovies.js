@@ -81,7 +81,8 @@ const updateAvailableMovie = async (req, res) => {
   const db = await getDB();
   let movie;
   let result;
-  const movieId = req.params.id;
+  const movieId = req.params.movieId;
+  console.log(`MovieId: {movieId}`)
   try {
     movie = await movieInfo.getMovieById(movieId);
   } catch {
@@ -120,7 +121,7 @@ const updateAvailableMovie = async (req, res) => {
 // DELETE MOVIE
 const deleteAvailableMovie = async (req, res) => {
   const db = await getDB();
-  const id = req.params.id;
+  const id = req.params.movieId;
   let result;
   try {
     result = await db

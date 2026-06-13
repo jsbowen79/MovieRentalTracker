@@ -252,7 +252,7 @@
       }
     },
 
-    "/movies/{id}": {
+    "/movies/{movieId}": {
       "put": {
         "tags": ["Available Movies"],
         "description": "Update a movie by ID",
