@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const asyncHandler = require('../errors/AsyncHandler');
 const {availableMovieRules, validateAvailableMovie } = require('../middleware/availableMoviesValidator.js');
-
+const availableMoviesController = require('../controllers/availableMoviesController');
+const validateMovie = require('../middleware/availableMoviesValidator');
 const requireAuth = require('../middleware/requireAuth');
 const authorizeUser = require('../middleware/authorizeUser');
 
@@ -14,7 +15,7 @@ router.post(
   asyncHandler(availableMoviesController.createMovie)
 );
 
-// GET ALL MOVIES (public)
+// GET ALL
 router.get('/', asyncHandler(availableMoviesController.getAllAvailableMovies));
 
 // GET BY GENRE (logged in users)
@@ -28,9 +29,8 @@ router.get(
 router.put(
   '/:id',
   authorizeUser('admin'),
-  availableMovieRules(),
-  validateAvailableMovie,
-  asyncHandler(availableMoviesController.updateAvailableMovie)
+  validateMovie,  availableMovieRules(),
+  validateAvailableMovie,availableMoviesController.updateAvailableMovie)
 );
 
 // DELETE MOVIE (admin only)
@@ -38,6 +38,10 @@ router.delete(
   '/:id',
   authorizeUser('admin'),
   asyncHandler(availableMoviesController.deleteAvailableMovie)
+);
+
+module.exports = router;
+ilableMovie)
 );
 
 module.exports = router;
