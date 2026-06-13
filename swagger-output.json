@@ -193,7 +193,7 @@
               "type": "object",
               "properties": {
                 "availableCopies": { "type": "number" },
-                "movieId":{"type": "string"}
+                "movieId": { "type": "string" }
               }
             }
           }
@@ -262,7 +262,8 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },  {
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,

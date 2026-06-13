@@ -11,10 +11,10 @@ const addAvailableMovieRules = () => {
       .bail(),
 
     body('availableCopies')
-    .notEmpty()
-    .withMessage("Please enter the number of available movies")
-    .isNumeric()
-    .withMessage("Please enter an integer.")
+      .notEmpty()
+      .withMessage('Please enter the number of available movies')
+      .isNumeric()
+      .withMessage('Please enter an integer.'),
   ];
 };
 
@@ -28,10 +28,10 @@ const updateAvailableMovieRules = () => {
       .bail(),
 
     body('availableCopies')
-    .notEmpty()
-    .withMessage("Please enter the number of available movies")
-    .isNumeric()
-    .withMessage("Please enter an integer.")
+      .notEmpty()
+      .withMessage('Please enter the number of available movies')
+      .isNumeric()
+      .withMessage('Please enter an integer.'),
   ];
 };
 
@@ -47,7 +47,7 @@ const validateAvailableMovie = (req, res, next) => {
   });
 };
 module.exports = {
-addAvailableMovieRules,
-updateAvailableMovieRules,
-  validateAvailableMovie
+  addAvailableMovieRules,
+  updateAvailableMovieRules,
+  validateAvailableMovie,
 };
