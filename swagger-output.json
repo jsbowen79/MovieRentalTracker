@@ -186,19 +186,14 @@
         "description": "Create a new available movie",
         "parameters": [
           {
-            "name": "movieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "availableCopies": { "type": "number" }
+                "availableCopies": { "type": "number" },
+                "movieId":{"type": "string"}
               }
             }
           }
@@ -263,7 +258,7 @@
         "description": "Update a movie by ID",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
