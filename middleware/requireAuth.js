@@ -2,8 +2,6 @@ const NotAuthenticatedError = require('../errors/NotAuthenticatedError');
 const NotAuthorizedError = require('../errors/NotAuthorizedError');
 
 function requireAuth(req, res, next) {
-  console.log('req.user:', req.user);
-  console.log('session:', req.session);
   if (!req.user) {
     return next(new NotAuthenticatedError('Access denied. Please log in.'));
   }

@@ -1,6 +1,5 @@
 const { body, param, validationResult } = require('express-validator');
 const { ObjectId } = require('mongodb');
-const UserDataError = require('../errors/UserDataError');
 
 const validUserRules = () => {
   return [
@@ -32,7 +31,6 @@ const validUserRules = () => {
       .matches(/^([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
       .withMessage('Phone number must be in ###-###-#### format.')
       .bail(),
-  
 
     body('role')
       .notEmpty()
@@ -94,7 +92,6 @@ const updateUserRules = () => {
       .matches(/^([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
       .withMessage('Phone number must be in ###-###-#### format.')
       .bail(),
-
 
     body('role')
       .optional()
