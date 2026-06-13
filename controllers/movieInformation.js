@@ -1,28 +1,31 @@
 const movieInfoModel = require('../models/movieInformation');
 const { ObjectId } = require('mongodb');
+const UserDataError = require('../errors/UserDataError');
+const MovieNotFoundError = require('../errors/NotFoundError');
+const AppError = require('../errors/AppError');
 
 const getAllMovies = async (req, res, next) => {
   try {
     const movies = await movieInfoModel.getAllMovies();
     res.status(200).json(movies);
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AppError('Failed to retrieve movies', 500));
   }
 };
 
 const getMovieById = async (req, res, next) => {
   try {
     if (!ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid movie ID' });
+      return next(new UserDataError('Invalid movie ID'));
     }
     const movie = await movieInfoModel.getMovieById(req.params.id);
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return next(new MovieNotFoundError('Movie not found', 404));
     } else {
       res.status(200).json(movie);
     }
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AppError('Failed to retrieve movie', 500));
   }
 };
 
@@ -44,15 +47,15 @@ const addMovie = async (req, res, next) => {
     } else {
       res.status(500).json({ error: 'Failed to add movie' });
     }
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AppError('Failed to add movie', 500));
   }
 };
 
 const updateMovieInfo = async (req, res, next) => {
   try {
     if (!ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid movie ID' });
+      return next(new UserDataError('Invalid movie ID'));
     }
     const updatedMovie = {
       title: req.body.title,
@@ -69,29 +72,29 @@ const updateMovieInfo = async (req, res, next) => {
       updatedMovie
     );
     if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return next(new MovieNotFoundError('Movie not found', 404));
     }
-    if (result.modifiedCount > 0) {
-      return res.status(200).json({ message: 'Movie updated successfully' });
+    if (result.modifiedCount === 0) {
+      return res.status(200).json({ message: 'No changes made' });
     }
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
+    res.status(200).json({ message: 'Movie updated successfully' });
+  } catch {
+    next(new AppError('Failed to update movie', 500));
   }
 };
 
 const deleteMovie = async (req, res, next) => {
   try {
     if (!ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid movie ID' });
+      return next(new UserDataError('Invalid movie ID'));
     }
     const result = await movieInfoModel.deleteMovie(req.params.id);
     if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return next(new MovieNotFoundError('Movie not found', 404));
     }
     res.status(200).json({ message: 'Movie deleted successfully' });
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AppError('Failed to delete movie', 500));
   }
 };
 module.exports = {

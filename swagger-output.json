@@ -384,57 +384,80 @@
         }
       }
     },
-    "/rented/": {
+
+    "/info/": {
       "get": {
-        "tags": ["Rented Movies"],
-        "description": "",
+        "tags": ["Movie Information"],
+        "description": "Get all movies and their information",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
-      }
-    },
-    "/rented/out/{userId}": {
-      "get": {
-        "tags": ["Rented Movies"],
-        "description": "",
+      },
+      "post": {
+        "tags": ["Movie Information"],
+        "description": "Adds a new movie to the database",
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "director": {
+                  "type": "string"
+                },
+                "releaseYear": {
+                  "type": "integer"
+                },
+                "genre": {
+                  "type": "string"
+                },
+                "main_actors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "length_minutes": {
+                  "type": "integer"
+                },
+                "studio": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
+
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
     },
     "/info/": {
       "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/info/{id}": {
-      "get": {
-        "description": "",
+        "tags": ["Movie Information"],
+        "description": "Get a single movie and its information based on the its id",
         "parameters": [
           {
             "name": "id",
@@ -444,13 +467,23 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": ["Movie Information"],
+        "description": "Update an existing movie's information based on its id",
         "parameters": [
           {
             "name": "id",
@@ -460,13 +493,23 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["Movie Information"],
+        "description": "Delete a movie from the database based on its id",
         "parameters": [
           {
             "name": "id",
@@ -476,8 +519,17 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
