@@ -205,32 +205,56 @@
         "description": "Redirect route after login"
       }
     },
-    "/auth/logout": {
-      "get": {
-        "description": "Log out of the Server"
-      }
-    },
     "/movies/": {
       "post": {
-        "description": "",
+        "tags": ["Available Movies"],
+        "description": "Create a new available movie",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "availableCopies": { "type": "number" },
+                "movieId": { "type": "string" }
+              }
+            }
+          }
+        ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "201": {
+            "description": "Movie created successfully"
+          },
+
+          "400": {
+            "description": "UserDataError: There is no movie with that Id."
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the database."
           }
         }
       },
+
       "get": {
-        "description": "",
+        "tags": ["Available Movies"],
+        "description": "Get all available movies",
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "Success - returns all movies"
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the Database."
           }
         }
       }
     },
+
     "/movies/{genreId}": {
       "get": {
-        "description": "",
+        "tags": ["Available Movies"],
+        "description": "Get movies filtered by genre",
         "parameters": [
           {
             "name": "genreId",
@@ -240,26 +264,75 @@
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "Success - returns filtered movies"
+          },
+          "404": {
+            "description": "NotFoundError: No movies were found in that genre."
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the Database."
           }
         }
       }
     },
-    "/movies/{userId}": {
-      "delete": {
-        "description": "",
+
+    "/movies/{movieId}": {
+      "put": {
+        "tags": ["Available Movies"],
+        "description": "Update a movie by ID",
         "parameters": [
           {
-            "name": "userId",
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "availableCopies": { "type": "number" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie updated successfully"
+          },
+          "404": {
+            "description": "NotFoundError: There are no movies with that Id."
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the Database."
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Available Movies"],
+        "description": "Delete a movie by ID",
+        "parameters": [
+          {
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "Movie deleted successfully"
+          },
+          "404": {
+            "description": "NotFoundError: The movie does not exist."
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the Database."
           }
         }
       }
