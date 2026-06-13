@@ -186,7 +186,7 @@
         "description": "Create a new available movie",
         "parameters": [
           {
-            "name": "genreId",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
