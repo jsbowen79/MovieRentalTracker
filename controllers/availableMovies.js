@@ -126,7 +126,7 @@ const deleteAvailableMovie = async (req, res) => {
   try {
     result = await db
       .collection('availableMovies')
-      .deleteOne({ movieId: new ObjectId(id) });
+      .deleteOne({ movieId: new ObjectId(movieId) });
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database.');
   }
