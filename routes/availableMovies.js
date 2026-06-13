@@ -29,7 +29,7 @@ router.get(
 router.put(
   '/:id',
   authorizeUser('admin'),
-  UpdateAvailableMovieRules(),
+  updateAvailableMovieRules(),
   validateAvailableMovie,
   asyncHandler(availableMoviesController.updateAvailableMovie)
 );
