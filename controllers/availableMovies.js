@@ -25,7 +25,7 @@ const addAvailableMovie = async (req, res) => {
   let movie;
   let result;
   try {
-    movie = movieInfo.getMovieById(req.body.movieId);
+    movie = await movieInfo.getMovieById(req.body.movieId);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database.');
   }
@@ -83,7 +83,7 @@ const updateAvailableMovie = async (req, res) => {
   let result;
   const movieId = req.params.id;
   try {
-    movie = movieInfo.getMovieById(movieId);
+    movie = await movieInfo.getMovieById(movieId);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
