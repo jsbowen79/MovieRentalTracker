@@ -478,9 +478,6 @@
         "get": {
         "tags": ["Movie Information"],
         "description": "Get all movies and their information",
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -490,47 +487,49 @@
           }
         }
       },
-      "post": {
-        "tags": ["Movie Information"],
+       "post": {
+        "tags": ["Movie information"],
         "description": "Adds a new movie to the database",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "title": {
                   "type": "string"
                 },
-                "director": {
+                 "director": {
                   "type": "string"
                 },
-                "releaseYear": {
+                 "releaseYear": {
                   "type": "integer"
                 },
-                "genre": {
+                 "genre": {
                   "type": "string"
                 },
-                "main_actors": {
+                 "main_actors": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                     "type": "string"
                   }
                 },
-                "length_minutes": {
+                 "length_minutes": {
                   "type": "integer"
                 },
-                "studio": {
+                 "studio": {
                   "type": "string"
-                },
-                "language": {
+                }, 
+                 "language": {
                   "type": "string"
                 }
               }
             }
           }
         ],
+        
         "responses": {
           "201": {
             "description": "Created"
