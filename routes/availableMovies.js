@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const asyncHandler = require('../errors/asyncHandler');
+const asyncHandler = require('../errors/AsyncHandler');
 const availableMoviesController = require('../controllers/availableMovies.js');
 
 const validateMovie = require('../middleware/availableMoviesValidator');
