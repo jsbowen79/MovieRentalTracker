@@ -186,14 +186,18 @@
         "description": "Create a new available movie",
         "parameters": [
           {
+            "name": "genreId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "movieId": { "type": "string" },
-                "genre": { "type": "string" },
                 "availableCopies": { "type": "number" }
               }
             }
@@ -263,6 +267,16 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },  {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "availableCopies": { "type": "number" }
+              }
+            }
           }
         ],
         "responses": {
