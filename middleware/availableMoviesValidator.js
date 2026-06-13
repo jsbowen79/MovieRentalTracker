@@ -1,7 +1,24 @@
 const { body, param, validationResult } = require('express-validator');
 const { ObjectId } = require('mongodb');
 
-const availableMovieRules = () => {
+const addAvailableMovieRules = () => {
+  return [
+    body('movieId')
+      .notEmpty()
+      .withMessage('Please Provide a movie Id.')
+      .custom((value) => ObjectId.isValid(value))
+      .withMessage('The movieId is invalid.')
+      .bail(),
+
+    body('availableCopies')
+    .notEmpty()
+    .withMessage("Please enter the number of available movies")
+    .isNumeric()
+    .withMessage("Please enter an integer.")
+  ];
+};
+
+const updateAvailableMovieRules = () => {
   return [
     param('movieId')
       .notEmpty()
@@ -29,9 +46,8 @@ const validateAvailableMovie = (req, res, next) => {
     errors: extractedErrors,
   });
 };
-
-
 module.exports = {
-  availableMovieRules,
+addAvailableMovieRules,
+updateAvailableMovieRules,
   validateAvailableMovie
 };
