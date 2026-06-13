@@ -21,7 +21,7 @@ router.get(
   asyncHandler(availableMoviesController.getAllMovies)
 );
 
-// GET BY GENRE (logged-in users)
+// GET BY GENRE (logged in users)
 router.get(
   '/:genreId',
   requireAuth,
