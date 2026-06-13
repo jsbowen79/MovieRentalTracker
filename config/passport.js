@@ -8,7 +8,7 @@ passport.use(
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL:
-      'https://movierentaltracker.onrender.com/auth/github/callback',
+        'https://movierentaltracker.onrender.com/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

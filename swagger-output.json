@@ -475,7 +475,7 @@
     },
 
     "/info/": {
-        "get": {
+      "get": {
         "tags": ["Movie Information"],
         "description": "Get all movies and their information",
         "responses": {
@@ -487,8 +487,8 @@
           }
         }
       },
-       "post": {
-        "tags": ["Movie information"],
+      "post": {
+        "tags": ["Movie Information"],
         "description": "Adds a new movie to the database",
         "parameters": [
           {
@@ -501,35 +501,35 @@
                 "title": {
                   "type": "string"
                 },
-                 "director": {
+                "director": {
                   "type": "string"
                 },
-                 "releaseYear": {
+                "releaseYear": {
                   "type": "integer"
                 },
-                 "genre": {
+                "genre": {
                   "type": "string"
                 },
-                 "main_actors": {
+                "main_actors": {
                   "type": "array",
                   "items": {
-                     "type": "string"
+                    "type": "string"
                   }
                 },
-                 "length_minutes": {
+                "length_minutes": {
                   "type": "integer"
                 },
-                 "studio": {
+                "studio": {
                   "type": "string"
-                }, 
-                 "language": {
+                },
+                "language": {
                   "type": "string"
                 }
               }
             }
           }
         ],
-        
+
         "responses": {
           "201": {
             "description": "Created"
@@ -621,9 +621,9 @@
           "200": {
             "description": "OK"
           },
-            "400": {
-              "description": "Bad Request"
-            },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not found"
           },
