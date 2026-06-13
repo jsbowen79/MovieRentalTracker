@@ -192,76 +192,130 @@
         }
       }
     },
-    "/movies/": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
+   "/movies/": {
+  "post": {
+    "tags": ["Available Movies"],
+    "description": "Create a new available movie",
+    "parameters": [
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "movieId": { "type": "string" },
+            "genre": { "type": "string" },
+            "year": { "type": "number" },
+            "language": { "type": "string" },
+            "studio": { "type": "string" },
+            "durationMinutes": { "type": "number" },
+            "rating": { "type": "number" },
+            "availableCopies": { "type": "number" }
           }
         }
+      }
+    ],
+    "responses": {
+      "201": {
+        "description": "Movie created successfully"
       },
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/movies/{genreId}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "genreId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/movies/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
+      "400": {
+        "description": "Bad Request"
       },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
+      "500": {
+        "description": "Internal Server Error"
       }
-    },
+    }
+  },
+
+  "get": {
+    "tags": ["Available Movies"],
+    "description": "Get all available movies",
+    "responses": {
+      "200": {
+        "description": "Success - returns all movies"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+},
+
+"/movies/{genreId}": {
+  "get": {
+    "tags": ["Available Movies"],
+    "description": "Get movies filtered by genre",
+    "parameters": [
+      {
+        "name": "genreId",
+        "in": "path",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success - returns filtered movies"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+},
+
+"/movies/{id}": {
+  "put": {
+    "tags": ["Available Movies"],
+    "description": "Update a movie by ID",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Movie updated successfully"
+      },
+      "404": {
+        "description": "Movie not found"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  },
+
+  "delete": {
+    "tags": ["Available Movies"],
+    "description": "Delete a movie by ID",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Movie deleted successfully"
+      },
+      "404": {
+        "description": "Movie not found"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+},
     "/rented/{userId}": {
       "post": {
         "description": "",

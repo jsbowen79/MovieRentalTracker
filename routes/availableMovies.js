@@ -2,19 +2,48 @@ const router = require('express').Router();
 const asyncHandler = require('../errors/asyncHandler');
 const availableMoviesController = require('../controllers/availableMovies.js');
 
-// CREATE MOVIE
-router.post('/', asyncHandler(availableMoviesController.createMovie));
+const validateMovie = require('../middleware/availableMoviesValidator');
+const requireAuth = require('../middleware/requireAuth');
+const authorizeUser = require('../middleware/authorizeUser');
 
-// GET ALL MOVIES
-router.get('/', asyncHandler(availableMoviesController.getAllMovies));
+// CREATE MOVIE (protected)
+router.post(
+  '/',
+  requireAuth,
+  authorizeUser('admin'),
+  validateMovie,
+  asyncHandler(availableMoviesController.createMovie)
+);
+
+// GET ALL MOVIES (public or logged-in depending on your rule)
+router.get(
+  '/',
+  requireAuth,
+  asyncHandler(availableMoviesController.getAllMovies)
+);
 
 // GET BY GENRE
-router.get('/:genreId', asyncHandler(availableMoviesController.getByGenre));
+router.get(
+  '/:genreId',
+  requireAuth,
+  asyncHandler(availableMoviesController.getByGenre)
+);
 
-// UPDATE MOVIE 
-router.put('/:id', asyncHandler(availableMoviesController.updateMovie));
+// UPDATE MOVIE (protected)
+router.put(
+  '/:id',
+  requireAuth,
+  authorizeUser('admin'),
+  validateMovie,
+  asyncHandler(availableMoviesController.updateMovie)
+);
 
-// DELETE MOVIE
-router.delete('/:id', asyncHandler(availableMoviesController.deleteMovie));
+// DELETE MOVIE (protected)
+router.delete(
+  '/:id',
+  requireAuth,
+  authorizeUser('admin'),
+  asyncHandler(availableMoviesController.deleteMovie)
+);
 
 module.exports = router;
