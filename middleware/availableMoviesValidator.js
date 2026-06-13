@@ -1,33 +1,37 @@
-const UserDataError = require('../errors/UserDataError');
+const { body, param, validationResult } = require('express-validator');
+const { ObjectId } = require('mongodb');
 
-function validateMovie(req, res, next) {
-  const {
-    movieId,
-    genre,
-    availableCopies,
-  } = req.body;
+const availableMovieRules = () => {
+  return [
+    param('movieId')
+      .notEmpty()
+      .withMessage('Please Provide a movie Id.')
+      .custom((value) => ObjectId.isValid(value))
+      .withMessage('The movieId is invalid.')
+      .bail(),
 
-  // helper for empty/invalid strings
-  const isEmpty = (val) => !val || val.toString().trim() === '';
+    body('availableCopies')
+    .notEmpty()
+    .withMessage("Please enter the number of available movies")
+    .isNumeric()
+    .withMessage("Please enter an integer.")
+  ];
+};
 
-  // Required fields check
-  if (
-    isEmpty(movieId) 
-  ) {
-    return next(new UserDataError('Missing required movie fields'));
+const validateAvailableMovie = (req, res, next) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    return next();
   }
+  const extractedErrors = [];
+  errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+  return res.status(422).json({
+    errors: extractedErrors,
+  });
+};
 
-  // Convert numeric fields safely
-  const parsedCopies = Number(availableCopies);
 
-  req.body.availableCopies = parsedCopies;
-
-  // Available copies validation
-  if (!Number.isInteger(parsedCopies) || parsedCopies < 0) {
-    return next(new UserDataError('Invalid available copies value'));
-  }
-
-  next();
-}
-
-module.exports = validateMovie;
+module.exports = {
+  availableMovieRules,
+  validateAvailableMovie
+};
