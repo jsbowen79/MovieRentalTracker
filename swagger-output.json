@@ -474,13 +474,27 @@
       }
     },
 
-    "/info/": {
+ "/info/": {
+      "get": {
+        "tags": ["Movie Information"],
+        "description": "Get all movies and their information",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
       "post": {
+        "tags": ["Movie Information"],
         "description": "Adds a new movie to the database",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -515,15 +529,23 @@
             }
           }
         ],
+
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
     },
     "/info/{movieId}": {
       "get": {
+        "tags": ["Movie Information"],
         "description": "Get a single movie and its information based on the its id",
         "parameters": [
           {
@@ -534,12 +556,22 @@
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       },
       "put": {
+        "tags": ["Movie Information"],
         "description": "Update an existing movie's information based on its id",
         "parameters": [
           {
@@ -586,12 +618,22 @@
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       },
       "delete": {
+        "tags": ["Movie Information"],
         "description": "Delete a movie from the database based on its id",
         "parameters": [
           {
@@ -602,8 +644,17 @@
           }
         ],
         "responses": {
-          "501": {
-            "description": "Not Implemented"
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
