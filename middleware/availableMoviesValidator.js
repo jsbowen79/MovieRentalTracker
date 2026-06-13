@@ -12,8 +12,7 @@ function validateMovie(req, res, next) {
 
   // Required fields check
   if (
-    isEmpty(movieId) ||
-    isEmpty(genre)
+    isEmpty(movieId) 
   ) {
     return next(new UserDataError('Missing required movie fields'));
   }
