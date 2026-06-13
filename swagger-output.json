@@ -206,11 +206,10 @@
 
           "400": {
             "description": "UserDataError: There is no movie with that Id."
-          }, 
-            "500": {
-              "description": "MongoDBConnectionError: There was a problem with the database."
-            }
-          
+          },
+          "500": {
+            "description": "MongoDBConnectionError: There was a problem with the database."
+          }
         }
       },
 

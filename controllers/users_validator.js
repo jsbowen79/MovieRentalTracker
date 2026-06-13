@@ -1,6 +1,5 @@
 const { body, param, validationResult } = require('express-validator');
 const { ObjectId } = require('mongodb');
-const UserDataError = require('../errors/UserDataError');
 
 const validUserRules = () => {
   return [

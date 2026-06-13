@@ -10,21 +10,22 @@ const getAllAvailableMovies = async (req, res) => {
   const db = await getDB();
   try {
     const movies = await db.collection('availableMovies').find().toArray();
+    res.status(200).json({
+      count: movies.length,
+      data: movies,
+    });
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database.');
   }
-
-  res.status(200).json({
-    count: movies.length,
-    data: movies,
-  });
 };
 
 // CREATE MOVIE
 const addAvailableMovie = async (req, res) => {
   const db = await getDB();
+  let movie;
+  let result;
   try {
-    const movie = movieInfo.getMovieById(req.body.movieId);
+    movie = movieInfo.getMovieById(req.body.movieId);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database.');
   }
@@ -36,7 +37,7 @@ const addAvailableMovie = async (req, res) => {
       genre: genre,
     };
     try {
-      const result = await db.collection('availableMovies').insertOne(newEntry);
+      result = await db.collection('availableMovies').insertOne(newEntry);
     } catch {
       throw new MongoDBConnectionError(
         'There was a problem with the database. '
@@ -54,10 +55,10 @@ const addAvailableMovie = async (req, res) => {
 // GET BY GENRE
 const getAvailableMoviesByGenre = async (req, res) => {
   const db = await getDB();
-
+  let movies;
   const genre = req.params.genreId;
   try {
-    const movies = await db
+    movies = await db
       .collection('availableMovies')
       .find({ genre: genre })
       .toArray();
@@ -78,10 +79,11 @@ const getAvailableMoviesByGenre = async (req, res) => {
 // UPDATE MOVIE
 const updateAvailableMovie = async (req, res) => {
   const db = await getDB();
-
+  let movie;
+  let result;
   const movieId = req.params.id;
   try {
-    const movie = movieInfo.getMovieById(req.params.id);
+    movie = movieInfo.getMovieById(movieId);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
@@ -96,7 +98,7 @@ const updateAvailableMovie = async (req, res) => {
       availableCopies: req.params.availableCopies,
     };
     try {
-      const result = await db
+      result = await db
         .collection('availableMovies')
         .updateOne({ movieId: movie.movieId }, { $set: updatedMovie });
     } catch {
@@ -113,29 +115,28 @@ const updateAvailableMovie = async (req, res) => {
       message: 'Movie updated successfully',
     });
   }
+};
 
-  // DELETE MOVIE
-  const deleteAvailableMovie = async (req, res) => {
-    const db = await getDB();
-    const id = req.params.id;
-    try {
-      const result = await db
-        .collection('availableMovies')
-        .deleteOne({ movieId: new ObjectId(id) });
-    } catch {
-      throw new MongoDBConnectionError(
-        'There was a problem with the database.'
-      );
-    }
+// DELETE MOVIE
+const deleteAvailableMovie = async (req, res) => {
+  const db = await getDB();
+  const id = req.params.id;
+  let result;
+  try {
+    result = await db
+      .collection('availableMovies')
+      .deleteOne({ movieId: new ObjectId(id) });
+  } catch {
+    throw new MongoDBConnectionError('There was a problem with the database.');
+  }
 
-    if (result.deletedCount === 0) {
-      throw new NotFoundError('The movie does not exist');
-    }
+  if (result.deletedCount === 0) {
+    throw new NotFoundError('The movie does not exist');
+  }
 
-    res.status(200).json({
-      message: 'Movie deleted successfully',
-    });
-  };
+  res.status(200).json({
+    message: 'Movie deleted successfully',
+  });
 };
 
 // EXPORTS
