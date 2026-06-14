@@ -121,7 +121,7 @@ const updateAvailableMovie = async (req, res) => {
 // DELETE MOVIE
 const deleteAvailableMovie = async (req, res) => {
   const db = await getDB();
-  const id = req.params.movieId;
+  const movieId = req.params.movieId;
   let result;
   try {
     result = await db
