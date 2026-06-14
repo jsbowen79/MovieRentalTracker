@@ -16,7 +16,9 @@ const getMovieById = async (id) => {
     const movieId = new ObjectId(id);
     console.log(`MovieId in getMovieById: ${movieId} Type: ${typeof movieId}`)
     const db = await mongodb.getDB();
-    return await db.collection('movieInfo').findOne({ movieId: movieId });
+  const result =  await db.collection('movieInfo').findOne({ movieId: movieId });
+  console.log(`result in getMovieById: ${result} ${typeof result}`);
+  return result; 
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database');
   }

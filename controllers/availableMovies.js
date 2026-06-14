@@ -85,7 +85,7 @@ const updateAvailableMovie = async (req, res) => {
   console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   try {
     movie = await movieInfo.getMovieById(movieId);
-
+    if (movie == null) console.log('movie is null')
     console.log(`movie: ${movie.movieId} ${movie.genre} ${movie.availableCopies}`);
     console.log(movie);
 console.log(JSON.stringify(movie, null, 2));
