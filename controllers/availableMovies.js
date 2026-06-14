@@ -82,8 +82,11 @@ const updateAvailableMovie = async (req, res) => {
   let movie;
   let result;
   const movieId = req.params.movieId;
+  console.log(`MovieId: ${movieId} TypE: {typeof movieId}`)
   try {
     movie = await movieInfo.getMovieById(movieId);
+
+    console.log(`movie: ${movie}`);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
@@ -97,6 +100,8 @@ const updateAvailableMovie = async (req, res) => {
       genre: genre,
       availableCopies: req.params.availableCopies,
     };
+
+    console.log(`updatedMovie: ${updatedMovie}`)
     try {
       result = await db
         .collection('availableMovies')
@@ -106,6 +111,7 @@ const updateAvailableMovie = async (req, res) => {
         'There was a problem with the database.'
       );
     }
+    console.log(`result: ${result} ${result.matchedCount}`)
 
     if (result.matchedCount === 0) {
       throw new NotFoundError('Movie not found');
