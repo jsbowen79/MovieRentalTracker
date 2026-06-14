@@ -123,7 +123,7 @@ const deleteAvailableMovie = async (req, res) => {
   const db = await getDB();
   const movieId = req.params.movieId;
   let result;
-  console.log(`MovieId: ${movieId}`)
+  console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   console.log(`Valid ObjectId? ${ObjectId.isValid(new ObjectId(movieId))}`);
   try {
     result = await db
