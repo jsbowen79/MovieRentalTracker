@@ -111,7 +111,7 @@ const updateAvailableMovie = async (req, res) => {
         'There was a problem with the database.'
       );
     }
-    console.log(`result: ${result.json()} ${result.matchedCount}`)
+    console.log(`result: ${result.matchedCount}`)
 
     if (result.matchedCount === 0) {
       throw new NotFoundError('Movie not found');
