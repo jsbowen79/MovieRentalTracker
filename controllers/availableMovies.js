@@ -84,7 +84,7 @@ const updateAvailableMovie = async (req, res) => {
   const movieId = req.params.movieId;
   console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   try {
-    movie = await movieInfo.getMovieById(new ObjectId(movieId));
+    movie = await movieInfo.getMovieById(movieId);
 
     console.log(`movie: ${movie.movieId} ${movie.genre} ${movie.availableCopies}`);
     console.log(movie);
