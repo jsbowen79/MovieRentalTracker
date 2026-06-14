@@ -121,14 +121,13 @@ const updateAvailableMovie = async (req, res) => {
 // DELETE MOVIE
 const deleteAvailableMovie = async (req, res) => {
   const db = await getDB();
-  const movieId = req.params.movieId;
   let result;
-  console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
+  console.log(`MovieId: ${req.params.movieId} Type: ${typeof req.params.movieId}`)
   console.log(`Valid ObjectId? ${ObjectId.isValid(new ObjectId(movieId))}`);
   try {
     result = await db
       .collection('availableMovies')
-      .deleteOne({ movieId: new ObjectId(movieId) });
+      .deleteOne({ movieId: new ObjectId(req.params.movieId) });
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database.');
   }
