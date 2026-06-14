@@ -90,7 +90,7 @@ const updateAvailableMovie = async (req, res) => {
     console.log(movie);
 console.log(JSON.stringify(movie, null, 2));
 console.log(Object.keys(movie));
-  } catch {
+  } catch (err) {
      console.error('Actual error:', err);
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
