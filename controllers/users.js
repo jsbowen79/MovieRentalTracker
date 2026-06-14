@@ -37,7 +37,7 @@ const getUserById = async (req, res) => {
     const usersCollection = await getUsersCollection();
 
     if (!ObjectId.isValid(req.params.userId)) {
-      return new UserDataError('userId is not valid');
+      throw new UserDataError('userId is not valid');
     }
 
     const user = await usersCollection.findOne({
@@ -45,14 +45,19 @@ const getUserById = async (req, res) => {
     });
 
     if (!user) {
-      return NotFoundError('User could not be found');
+      throw new NotFoundError('User could not be found');
     }
 
     res.status(200).json(user);
-  } catch {
-    return MongoDBConnectionError('There was a problem with the database.');
+
+  } catch (error) {
+    if (error instanceof AppError){
+      throw error;
+    }else {
+    throw new MongoDBConnectionError('There was a problem with the database.');
   }
 };
+}
 
 // Create a new customer's user
 
@@ -85,7 +90,7 @@ const createUser = async (req, res) => {
       role: user.role,
     });
   } catch {
-    return new MongoDBConnectionError('There was a Problem with the database.');
+    throw new MongoDBConnectionError('There was a Problem with the database.');
   }
 };
 
@@ -106,7 +111,7 @@ const updateUser = async (req, res) => {
     );
 
     if (result.matchedCount === 0) {
-      return new NotFoundError('User could not be found');
+      throw new NotFoundError('User could not be found');
     }
 
     const updatedUser = await usersCollection.findOne({ _id: userId });
@@ -115,9 +120,13 @@ const updateUser = async (req, res) => {
       message: 'User has been updated successfully',
       user: updatedUser,
     });
-  } catch {
-    return new MongoDBConnectionError('There was a problem with the database.');
+  } catch (error){
+    if (error instanceof AppError){
+      throw error;
+    }else {
+    throw new MongoDBConnectionError('There was a problem with the database.');
   }
+}
 };
 
 // Delete a customer's user
@@ -129,7 +138,7 @@ const deleteUser = async (req, res) => {
     const usersCollection = await getUsersCollection();
 
     if (!ObjectId.isValid(req.params.userId)) {
-      return new UserDataError('userId is not valid');
+      throw new UserDataError('userId is not valid');
     }
 
     const userId = new ObjectId(req.params.userId);
@@ -143,9 +152,13 @@ const deleteUser = async (req, res) => {
     return res
       .status(200)
       .json({ message: 'User has been deleted successfully' });
-  } catch {
-    return new MongoDBConnectionError('There was a problem with the Database');
+  } catch (error) {
+    if (error instanceof AppError){
+      throw error
+    } else {
+    throw new MongoDBConnectionError('There was a problem with the Database');
   }
+}
 };
 
 module.exports = {

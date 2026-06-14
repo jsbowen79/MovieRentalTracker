@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 const AppError = require('./AppError.js');
 function errorHandler(err, req, res, next) {
-  console.log('Error Middleware Hit');
   console.error(err);
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({

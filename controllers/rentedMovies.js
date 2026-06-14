@@ -54,7 +54,6 @@ async function listRentedByUser(req, res) {
   }
   if (req.params.userId) {
     const userId = new ObjectId(req.params.userId);
-    console.log('All: ', all);
     const result = await rentedModel.listRentedMovies(userId, all);
     res.json(result);
   } else {

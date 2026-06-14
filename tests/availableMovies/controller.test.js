@@ -4,11 +4,11 @@ jest.mock('../../models/mongoDb', () => ({
 
 const { getDB } = require('../../models/mongoDb');
 const {
-  getAllMovies,
-  getByGenre,
+  getAllAvailableMovies,
+  getAvailableMoviesByGenre,
 } = require('../../controllers/availableMovies');
 
-describe('getAllMovies', () => {
+describe('getAllAvailableMovies', () => {
   test('returns all movies', async () => {
     const movies = [{ title: 'Inception' }, { title: 'Interstellar' }];
 
@@ -34,7 +34,7 @@ describe('getAllMovies', () => {
       json: jest.fn(),
     };
 
-    await getAllMovies(req, res);
+    await getAllAvailableMovies(req, res);
 
     expect(getDB).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(200);
@@ -45,7 +45,7 @@ describe('getAllMovies', () => {
   });
 });
 
-describe('getByGenre', () => {
+describe('getAvailableMoviesByGenre', () => {
   test('returns movies filtered by genre', async () => {
     const movies = [
       { title: 'Inception', genre: 'Sci-Fi' },
@@ -79,7 +79,7 @@ describe('getByGenre', () => {
       json: jest.fn(),
     };
 
-    await getByGenre(req, res);
+    await getAvailableMoviesByGenre(req, res);
 
     expect(getDB).toHaveBeenCalledTimes(1);
 

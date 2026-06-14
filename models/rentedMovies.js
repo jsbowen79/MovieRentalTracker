@@ -119,7 +119,6 @@ async function listRentedMovies(userId, all) {
         .collection('rentedMovies')
         .find({ userId: userId })
         .toArray();
-      console.log('result: ', result);
       if (result.length > 0) {
         return result;
       } else {

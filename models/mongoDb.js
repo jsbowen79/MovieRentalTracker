@@ -12,7 +12,6 @@ async function connectDB() {
       await client.connect();
       db = client.db();
       console.log('Connected to MongoDB');
-      // console.log('db inside Mongo: ', db);
 
       return db;
     } catch {
