@@ -84,7 +84,7 @@ const updateAvailableMovie = async (req, res) => {
   const movieId = req.params.movieId;
   console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   try {
-    movie = await movieInfo.getMovieById(movieId);
+    movie = await db.collection('availableMovies').findOne({movieId: new ObjectId(movieId)});
     if (movie == null) console.log('movie is null')
     console.log(`movie: ${movie.movieId} ${movie.genre} ${movie.availableCopies}`);
     console.log(movie);

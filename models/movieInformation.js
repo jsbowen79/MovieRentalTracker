@@ -13,21 +13,11 @@ const getAllMovies = async () => {
 
 const getMovieById = async (id) => {
   try {
-  //   const movieId = new ObjectId(id);
-  //   console.log(`MovieId in getMovieById: ${movieId} Type: ${typeof movieId}`)
-  //   const db = await mongodb.getDB();
-  // const result =  await db.collection('movieInfo').findOne({ movieId: movieId });
-  // console.log(`result in getMovieById: ${result} ${typeof result}`);
-
-  const db = await mongodb.getDB();
-
-const movie = await db.collection('movieInfo').findOne();
-
-console.log(movie);
-console.log('movieId value:', movie.movieId);
-console.log('movieId constructor:', movie.movieId?.constructor?.name);
-console.log('search value:', movieId);
-console.log('search constructor:', movieId?.constructor?.name);
+    const movieId = new ObjectId(id);
+    console.log(`MovieId in getMovieById: ${movieId} Type: ${typeof movieId}`)
+    const db = await mongodb.getDB();
+  const result =  await db.collection('movieInfo').findOne({ movieId: movieId });
+  console.log(`result in getMovieById: ${result} ${typeof result}`);
   return result; 
   } catch {
     throw new MongoDBConnectionError('There was a problem with the database');
