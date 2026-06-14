@@ -122,8 +122,6 @@ const updateAvailableMovie = async (req, res) => {
 const deleteAvailableMovie = async (req, res) => {
   const db = await getDB();
   let result;
-  console.log(`MovieId: ${req.params.movieId} Type: ${typeof req.params.movieId}`)
-  console.log(`Valid ObjectId? ${ObjectId.isValid(new ObjectId(req.params.movieId))}`);
   try {
     result = await db
       .collection('availableMovies')
