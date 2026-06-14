@@ -82,12 +82,11 @@ const updateAvailableMovie = async (req, res) => {
   let movie;
   let result;
   const movieId = req.params.movieId;
-  const movieIdObject = new ObjectId(movieId); 
-  console.log(`MovieId: ${movieIdObject} Type: ${typeof movieIdObject}`)
+  console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   try {
     movie = await movieInfo.getMovieById(new ObjectId(movieId));
 
-    console.log(`movie: ${movie.movieId}`);
+    console.log(`movie: ${movie.movieId} ${movie.genre} ${movie.availableCopies}`);
   } catch {
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
