@@ -82,16 +82,9 @@ const updateAvailableMovie = async (req, res) => {
   let movie;
   let result;
   const movieId = req.params.movieId;
-  console.log(`MovieId: ${movieId} Type: ${typeof movieId}`)
   try {
     movie = await db.collection('availableMovies').findOne({movieId: new ObjectId(movieId)});
-    if (movie == null) console.log('movie is null')
-    console.log(`movie: ${movie.movieId} ${movie.genre} ${movie.availableCopies}`);
-    console.log(movie);
-console.log(JSON.stringify(movie, null, 2));
-console.log(Object.keys(movie));
   } catch (err) {
-     console.error('Actual error:', err);
     throw new MongoDBConnectionError('There was a problem with the Database. ');
   }
   if (movie == null) {
