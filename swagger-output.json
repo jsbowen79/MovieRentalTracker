@@ -318,7 +318,7 @@
         "description": "Delete a movie by ID",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieId",
             "in": "path",
             "required": true,
             "type": "string"
