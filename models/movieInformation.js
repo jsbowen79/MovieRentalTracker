@@ -14,7 +14,7 @@ const getAllMovies = async () => {
 const getMovieById = async (id) => {
   try {
     const movieId = new ObjectId(id);
-    console.log(`MovieId in getMovieById: ${movieId}`)
+    console.log(`MovieId in getMovieById: ${movieId} Type: ${typeof movieId}`)
     const db = await mongodb.getDB();
     return await db.collection('movieInfo').findOne({ movieId: movieId });
   } catch {
