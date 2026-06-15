@@ -49,15 +49,16 @@ const getUserById = async (req, res) => {
     }
 
     res.status(200).json(user);
-
   } catch (error) {
-    if (error instanceof AppError){
+    if (error instanceof AppError) {
       throw error;
-    }else {
-    throw new MongoDBConnectionError('There was a problem with the database.');
+    } else {
+      throw new MongoDBConnectionError(
+        'There was a problem with the database.'
+      );
+    }
   }
 };
-}
 
 // Create a new customer's user
 
@@ -120,13 +121,15 @@ const updateUser = async (req, res) => {
       message: 'User has been updated successfully',
       user: updatedUser,
     });
-  } catch (error){
-    if (error instanceof AppError){
+  } catch (error) {
+    if (error instanceof AppError) {
       throw error;
-    }else {
-    throw new MongoDBConnectionError('There was a problem with the database.');
+    } else {
+      throw new MongoDBConnectionError(
+        'There was a problem with the database.'
+      );
+    }
   }
-}
 };
 
 // Delete a customer's user
@@ -153,12 +156,12 @@ const deleteUser = async (req, res) => {
       .status(200)
       .json({ message: 'User has been deleted successfully' });
   } catch (error) {
-    if (error instanceof AppError){
-      throw error
+    if (error instanceof AppError) {
+      throw error;
     } else {
-    throw new MongoDBConnectionError('There was a problem with the Database');
+      throw new MongoDBConnectionError('There was a problem with the Database');
+    }
   }
-}
 };
 
 module.exports = {

@@ -50,35 +50,31 @@ describe('getAllMovies', () => {
   });
 
   test('calls next with AppError when getAllMovies fails', async () => {
-  movieInfoModel.getAllMovies.mockRejectedValue(
-    new Error('Database Down')
-  );
+    movieInfoModel.getAllMovies.mockRejectedValue(new Error('Database Down'));
 
-  const req = {};
+    const req = {};
 
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
 
-  const next = jest.fn();
+    const next = jest.fn();
 
-  await getAllMovies(req, res, next);
+    await getAllMovies(req, res, next);
 
-  expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalled();
 
-  const errorPassed = next.mock.calls[0][0];
+    const errorPassed = next.mock.calls[0][0];
 
-  expect(errorPassed).toBeInstanceOf(AppError);
+    expect(errorPassed).toBeInstanceOf(AppError);
 
-  expect(errorPassed.message).toBe(
-    'Failed to retrieve movies'
-  );
-});
+    expect(errorPassed.message).toBe('Failed to retrieve movies');
+  });
 });
 
 describe('getMovieById', () => {
-  test('returns movie by id', async () => {
+  (test('returns movie by id', async () => {
     const movie = {
       _id: '6a232fa1bb91bec5e1da0022',
       title: 'Jaws',
@@ -102,8 +98,9 @@ describe('getMovieById', () => {
 
     await getMovieById(req, res, next);
 
-    expect(movieInfoModel.getMovieById)
-      .toHaveBeenCalledWith('6a232fa1bb91bec5e1da0022');
+    expect(movieInfoModel.getMovieById).toHaveBeenCalledWith(
+      '6a232fa1bb91bec5e1da0022'
+    );
 
     expect(res.status).toHaveBeenCalledWith(200);
 
@@ -111,91 +108,82 @@ describe('getMovieById', () => {
 
     expect(next).not.toHaveBeenCalled();
   }),
-  test('calls next with UserDataError when id is invalid', async () => {
-  const req = {
-    params: {
-      id: 'bad-id',
-    },
-  };
+    test('calls next with UserDataError when id is invalid', async () => {
+      const req = {
+        params: {
+          id: 'bad-id',
+        },
+      };
 
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-  const next = jest.fn();
+      const next = jest.fn();
 
-  await getMovieById(req, res, next);
+      await getMovieById(req, res, next);
 
-  expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
 
-  const errorPassed = next.mock.calls[0][0];
+      const errorPassed = next.mock.calls[0][0];
 
-  expect(errorPassed).toBeInstanceOf(UserDataError);
+      expect(errorPassed).toBeInstanceOf(UserDataError);
 
-  expect(errorPassed.message).toBe(
-    'Invalid movie ID'
-  );
+      expect(errorPassed.message).toBe('Invalid movie ID');
 
-  expect(movieInfoModel.getMovieById)
-    .not.toHaveBeenCalled();
-}), test('calls next with NotFoundError when movie does not exist', async () => {
-  movieInfoModel.getMovieById.mockResolvedValue(null);
+      expect(movieInfoModel.getMovieById).not.toHaveBeenCalled();
+    }),
+    test('calls next with NotFoundError when movie does not exist', async () => {
+      movieInfoModel.getMovieById.mockResolvedValue(null);
 
-  const req = {
-    params: {
-      id: '6a232fa1bb91bec5e1da0022',
-    },
-  };
+      const req = {
+        params: {
+          id: '6a232fa1bb91bec5e1da0022',
+        },
+      };
 
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-  const next = jest.fn();
+      const next = jest.fn();
 
-  await getMovieById(req, res, next);
+      await getMovieById(req, res, next);
 
-  expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
 
-  const errorPassed = next.mock.calls[0][0];
+      const errorPassed = next.mock.calls[0][0];
 
-  expect(errorPassed).toBeInstanceOf(NotFoundError);
+      expect(errorPassed).toBeInstanceOf(NotFoundError);
 
-  expect(errorPassed.message).toBe(
-    'Movie not found'
-  );
-}),
-test('calls next with AppError when database throws', async () => {
-  movieInfoModel.getMovieById.mockRejectedValue(
-    new Error('Database Down')
-  );
+      expect(errorPassed.message).toBe('Movie not found');
+    }),
+    test('calls next with AppError when database throws', async () => {
+      movieInfoModel.getMovieById.mockRejectedValue(new Error('Database Down'));
 
-  const req = {
-    params: {
-      id: '6a232fa1bb91bec5e1da0022',
-    },
-  };
+      const req = {
+        params: {
+          id: '6a232fa1bb91bec5e1da0022',
+        },
+      };
 
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-  const next = jest.fn();
+      const next = jest.fn();
 
-  await getMovieById(req, res, next);
+      await getMovieById(req, res, next);
 
-  expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
 
-  const errorPassed = next.mock.calls[0][0];
+      const errorPassed = next.mock.calls[0][0];
 
-  expect(errorPassed).toBeInstanceOf(AppError);
+      expect(errorPassed).toBeInstanceOf(AppError);
 
-  expect(errorPassed.message).toBe(
-    'Failed to retrieve movie'
-  );
+      expect(errorPassed.message).toBe('Failed to retrieve movie');
+    }));
 });
-});
-

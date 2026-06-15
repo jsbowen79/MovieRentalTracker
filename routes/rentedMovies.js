@@ -8,7 +8,7 @@ const {
   validateUpdate,
   validRentalRules,
   updateTransactionRules,
-} = require('../controllers/rentedMovies_validator.js');
+} = require('../middleware/rentedMovies_validator.js');
 
 router.post(
   '/:userId',

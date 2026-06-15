@@ -4,7 +4,7 @@ const {
   validateUpdate,
   validUserRules,
   updateUserRules,
-} = require('../controllers/users_validator');
+} = require('../middleware/users_validator.js');
 const asyncHandler = require('../errors/AsyncHandler');
 const requireAuth = require('../middleware/requireAuth.js');
 const authorizeUser = require('../middleware/authorizeUser.js');

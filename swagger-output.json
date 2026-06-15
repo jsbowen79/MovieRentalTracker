@@ -547,7 +547,7 @@
       }
     },
 
- "/info/": {
+    "/info/": {
       "get": {
         "tags": ["Movie Information"],
         "description": "Get all movies and their information",
@@ -728,56 +728,6 @@
           },
           "500": {
             "description": "Server Error"
-          }
-        }
-      }
-    },
-    "/review/{movieId}": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "movieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
-          }
-        }
-      },
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "movieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "movieId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "501": {
-            "description": "Not Implemented"
           }
         }
       }

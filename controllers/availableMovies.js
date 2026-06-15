@@ -4,6 +4,7 @@ const movieInfo = require('../models/movieInformation');
 const UserDataError = require('../errors/UserDataError');
 const NotFoundError = require('../errors/NotFoundError');
 const MongoDBConnectionError = require('../errors/MongoDBConnectionError');
+const AppError = require('../errors/AppError');
 
 // GET ALL MOVIES
 const getAllAvailableMovies = async (req, res) => {
@@ -83,9 +84,17 @@ const updateAvailableMovie = async (req, res) => {
   let result;
   const movieId = req.params.movieId;
   try {
-    movie = await db.collection('availableMovies').findOne({movieId: new ObjectId(movieId)});
+    movie = await db
+      .collection('availableMovies')
+      .findOne({ movieId: new ObjectId(movieId) });
   } catch (err) {
-    throw new MongoDBConnectionError('There was a problem with the Database. ');
+    if (err instanceof AppError) {
+      throw err;
+    } else {
+      throw new MongoDBConnectionError(
+        'There was a problem with the Database. '
+      );
+    }
   }
   if (movie == null) {
     throw new NotFoundError('There are no movies with that Id');
@@ -98,7 +107,7 @@ const updateAvailableMovie = async (req, res) => {
       availableCopies: req.params.availableCopies,
     };
 
-    console.log(`updatedMovie: ${updatedMovie.movieId}`)
+    console.log(`updatedMovie: ${updatedMovie.movieId}`);
     try {
       result = await db
         .collection('availableMovies')
@@ -108,7 +117,7 @@ const updateAvailableMovie = async (req, res) => {
         'There was a problem with the database.'
       );
     }
-    console.log(`result: ${result.matchedCount}`)
+    console.log(`result: ${result.matchedCount}`);
 
     if (result.matchedCount === 0) {
       throw new NotFoundError('Movie not found');
