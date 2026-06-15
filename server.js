@@ -46,7 +46,6 @@ app.get('/', (req, res) => {
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use('/', routes);
 
-app.use(errorHandler);
 //Start Server
 
 app.use(errorHandler);
